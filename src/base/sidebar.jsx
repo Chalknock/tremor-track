@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./sidebar.css";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-const sidebar = () => {
+const Sidebar = () => {
   const [currImg, setCurrImg] = useState(0);
   const images = [
     { title: "San Diego", subtitle: "This is San Diego" },
@@ -44,4 +44,4 @@ const sidebar = () => {
   );
 };
 
-export default sidebar;
+export default Sidebar;

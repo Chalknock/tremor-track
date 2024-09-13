@@ -1,6 +1,6 @@
 import React from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-const userProfile = () => {
+const UserProfile = () => {
   return (
     <>
       <div className="container-fluid my-auto gradient-form">
@@ -48,4 +48,4 @@ const userProfile = () => {
   );
 };
 
-export default userProfile;
+export default UserProfile;

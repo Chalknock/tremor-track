@@ -5,6 +5,7 @@ import "../src/assets/css/index.css";
 import Sidebar from "./base/sidebar";
 import UserProfile from "./pages/userProfile";
 import Multiform from "./components/Multiform";
+import TremorDrawer from "./base/TremorDrawer";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
       {/* <Login /> */}
       {/* <UserProfile /> */}
       {/* <Sidebar /> */}
-      <Multiform />
+      <TremorDrawer />
     </>
   );
 }

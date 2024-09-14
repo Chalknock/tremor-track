@@ -1,9 +1,19 @@
 import { FormEvent, useState } from "react";
 import { useMultiStep } from "../utilities/useMultiStep";
-import InspectionForm from "../formSteps/InspectionForm";
-import BuildingDescription from "../formSteps/BuildingDescription";
-import TypeofConstruction from "../formSteps/TypeofConstruction";
-import PrimaryOccupancy from "../formSteps/PrimaryOccupancy";
+import InspectionForm from "../formSteps/RapidEvaluation/InspectionForm";
+import BuildingDescription from "../formSteps/RapidEvaluation/BuildingDescription";
+import TypeofConstruction from "../formSteps/RapidEvaluation/TypeofConstruction";
+import PrimaryOccupancy from "../formSteps/RapidEvaluation/PrimaryOccupancy";
+import Evaluation from "../formSteps/RapidEvaluation/Evaluation";
+import EstimatedBldgDmg from "../formSteps/RapidEvaluation/EstimatedBldgDmg";
+import Posting from "../formSteps/RapidEvaluation/Posting";
+import UseAndEntry from "../formSteps/RapidEvaluation/UseAndEntry";
+import UseAndEntryFurtherAction from "../formSteps/RapidEvaluation/UseAndEntryFurtherAction";
+import OverAllHazards from "../formSteps/DetailedEvaluation/OverAllHazards";
+import StructuralHazards from "../formSteps/DetailedEvaluation/StructuralHazards";
+import NonStructuralHazards from "../formSteps/DetailedEvaluation/NonStructuralHazards";
+import GeoTechnicalHazards from "../formSteps/DetailedEvaluation/GeoTechnicalHazards";
+import EstimatedBldgDmgPhotos from "../formSteps/DetailedEvaluation/EstimatedBldgDmgPhotos";
 
 const INITIAL_DATA = {
   firstName: "",
@@ -30,6 +40,16 @@ const Multiform = () => {
       <BuildingDescription />,
       <TypeofConstruction />,
       <PrimaryOccupancy />,
+      <Evaluation />,
+      <EstimatedBldgDmg />,
+      <Posting />,
+      <UseAndEntry />,
+      <UseAndEntryFurtherAction />,
+      <OverAllHazards />,
+      <StructuralHazards />,
+      <NonStructuralHazards />,
+      <GeoTechnicalHazards />,
+      <EstimatedBldgDmgPhotos />,
     ]);
 
   function onSubmit(e) {
@@ -44,11 +64,9 @@ const Multiform = () => {
         background: "white",
         border: "1px solid black",
         padding: "2rem",
-        margin: "2rem auto",
+        margin: "1rem auto",
         borderRadius: ".5rem",
-        maxWidth: "50%",
-        maxHeight: "90vh",
-        height: "90vh",
+        maxWidth: "100%",
         display: "flex",
         flexDirection: "column",
         fontFamily: "Arial",
@@ -63,6 +81,7 @@ const Multiform = () => {
         }}
       >
         {step}
+
         <div
           style={{
             marginTop: "auto",

@@ -14,30 +14,55 @@ import StructuralHazards from "../formSteps/DetailedEvaluation/StructuralHazards
 import NonStructuralHazards from "../formSteps/DetailedEvaluation/NonStructuralHazards";
 import GeoTechnicalHazards from "../formSteps/DetailedEvaluation/GeoTechnicalHazards";
 import EstimatedBldgDmgPhotos from "../formSteps/DetailedEvaluation/EstimatedBldgDmgPhotos";
-
-const INITIAL_DATA = {
-  firstName: "",
-  lastName: "",
-  age: "",
-  street: "",
-  city: "",
-  state: "",
-  zip: "",
-  email: "",
-  password: "",
-};
-
+import "../assets/css/multiStepForm.css";
 const Multiform = () => {
-  const [data, setData] = useState(INITIAL_DATA);
-  function updateFields(fields) {
-    setData((prev) => {
-      return { ...prev, ...fields };
-    });
-  }
+  const [formData, setFormData] = useState({
+    inspection: {
+      buildingName: "",
+      lat: "",
+      lon: "",
+      date: "",
+      time: "",
+      areaInspected: "",
+    },
+    buildingDescription: {
+      contact: "",
+    },
+  });
+
+  const handleChange1 = (field, value) => {
+    setFormData((prevData) => ({ ...prevData, [field]: value }));
+  };
+
+  const handleChange = (section, field) => (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [section]: {
+        ...prevData[section],
+        [field]: value || "",
+      },
+    }));
+  };
+
+  const handleRadioChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      inspection: {
+        ...prevData.inspection,
+        areaInspected: value || "",
+      },
+    }));
+  };
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultiStep([
-      <InspectionForm />,
-      <BuildingDescription />,
+      <InspectionForm
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleRadioChange}
+      />,
+      <BuildingDescription formData={formData} onChange={handleChange} />,
       <TypeofConstruction />,
       <PrimaryOccupancy />,
       <Evaluation />,
@@ -52,71 +77,33 @@ const Multiform = () => {
       <EstimatedBldgDmgPhotos />,
     ]);
 
-  function onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
-    if (!isLastStep) return next();
-    alert("Successful Account Creation");
-  }
+    if (isLastStep) {
+      alert("Successful Account Creation");
+
+      console.log(formData);
+    } else {
+      next();
+    }
+  };
+
   return (
-    <div
-      style={{
-        position: "relative",
-        background: "white",
-        border: "1px solid black",
-        padding: "2rem",
-        margin: "1rem auto",
-        borderRadius: ".5rem",
-        maxWidth: "100%",
-        display: "flex",
-        flexDirection: "column",
-        fontFamily: "Arial",
-      }}
-    >
-      <form
-        onSubmit={onSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column", // Ensure the form content is arranged in a column
-          height: "100%", // Full height of the container
-        }}
-      >
+    <div className="form-container">
+      <form onSubmit={onSubmit} className="multi-step-form">
         {step}
-
-        <div
-          style={{
-            marginTop: "auto",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flex: 1,
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            {!isFirstStep && (
-              <button type="button" onClick={back}>
-                Back
-              </button>
-            )}
-
-            <div
-              style={{
-                flex: 1,
-                textAlign: "center",
-                marginLeft: !isFirstStep ? "1rem" : "0",
-                marginRight: "1rem",
-              }}
-            >
-              {currentStepIndex + 1} of {steps.length}
-            </div>
-
-            <button type="submit">{isLastStep ? "Finish" : "Next"}</button>
+        <div className="navigation-buttons">
+          {!isFirstStep && (
+            <button type="button" onClick={back} aria-label="Go back">
+              Back
+            </button>
+          )}
+          <div className="step-info">
+            {currentStepIndex + 1} of {steps.length}
           </div>
+          <button type="submit" aria-label={isLastStep ? "Finish" : "Next"}>
+            {isLastStep ? "Finish" : "Next"}
+          </button>
         </div>
       </form>
     </div>

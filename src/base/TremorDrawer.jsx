@@ -97,7 +97,7 @@ const TremorDrawer = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            ATC-20
           </Typography>
         </Toolbar>
       </AppBar>

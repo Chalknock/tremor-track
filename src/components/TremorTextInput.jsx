@@ -4,6 +4,7 @@ import { LocationOn } from "@mui/icons-material";
 
 const TremorTextInput = (props) => {
   const id = props.id;
+  const name = props.name;
   const label = props.label;
   const variant = props.variant;
   const icon = props.icon;
@@ -13,9 +14,12 @@ const TremorTextInput = (props) => {
   const width = props.width;
   const value = props.value;
   const onChange = props.onChange;
+  const maxRows = props.maxRows;
+  const multiline = props.multiline;
   return (
     <TextField
       id={id}
+      name={name}
       label={label}
       variant={variant}
       required={inputRequired}
@@ -23,6 +27,8 @@ const TremorTextInput = (props) => {
       type={type}
       value={value}
       onChange={onChange}
+      multiline={multiline}
+      maxRows={maxRows}
       slotProps={{
         inputLabel: { required: false },
         input: {

@@ -1,7 +1,7 @@
 import React from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
-const TremortMapContainer = () => {
+const TremorMapContainer = () => {
   return (
     <MapContainer
       center={[51.505, -0.09]}
@@ -22,4 +22,4 @@ const TremortMapContainer = () => {
   );
 };
 
-export default TremortMapContainer;
+export default TremorMapContainer;

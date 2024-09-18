@@ -2,6 +2,7 @@ import React from "react";
 import TremorTextInput from "../../components/TremorTextInput";
 import { Call, LocationOn, MarkEmailUnreadSharp } from "@mui/icons-material";
 import { Box, Divider, Typography } from "@mui/material";
+import TremorStepTitle from "../../components/TremorStepTitle";
 
 const BuildingDescription = ({ formData, onChange }) => {
   const handleInputChange = (field) => (e) => {
@@ -9,6 +10,7 @@ const BuildingDescription = ({ formData, onChange }) => {
   };
   return (
     <>
+      <TremorStepTitle name={"BUILDING DESCRIPTION"} />
       <div className="row d-flex">
         <div className="col-md-12 col-lg-6">
           <TremorTextInput
@@ -37,6 +39,8 @@ const BuildingDescription = ({ formData, onChange }) => {
             required={false}
             type={"number"}
             width="100%"
+            value={formData.buildingDescription.aboveGround}
+            onChange={handleInputChange("aboveGround")}
           />
         </div>
         <div className="col-md-6 col-lg">
@@ -48,6 +52,8 @@ const BuildingDescription = ({ formData, onChange }) => {
             required={false}
             type={"number"}
             width="100%"
+            value={formData.buildingDescription.belowGround}
+            onChange={handleInputChange("belowGround")}
           />
         </div>
       </div>
@@ -65,6 +71,8 @@ const BuildingDescription = ({ formData, onChange }) => {
             required={false}
             type={"number"}
             width="100%"
+            value={formData.buildingDescription.footprintArea}
+            onChange={handleInputChange("footprintArea")}
           />
         </div>
       </div>
@@ -82,6 +90,8 @@ const BuildingDescription = ({ formData, onChange }) => {
             required={false}
             type={"number"}
             width="100%"
+            value={formData.buildingDescription.habitable}
+            onChange={handleInputChange("habitable")}
           />
         </div>
         <div className="col-md-6 col-lg-6">
@@ -93,6 +103,8 @@ const BuildingDescription = ({ formData, onChange }) => {
             required={false}
             type={"number"}
             width="100%"
+            value={formData.buildingDescription.nonHabitable}
+            onChange={handleInputChange("nonHabitable")}
           />
         </div>
       </div>

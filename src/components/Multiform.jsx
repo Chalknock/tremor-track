@@ -21,18 +21,40 @@ const Multiform = () => {
       buildingName: "",
       lat: "",
       lon: "",
-      date: "",
-      time: "",
+      date: null,
+      time: null,
       areaInspected: "",
     },
     buildingDescription: {
       contact: "",
+      aboveGround: "",
+      belowGround: "",
+      footprintArea: "",
+      habitable: "",
+      nonHabitable: "",
+    },
+    typeofConstruction: {
+      radioOptions: "",
+      specify: "",
+    },
+    primaryOccupancy: {
+      radioOptions: "",
+      specify: "",
+    },
+    evaluation: {
+      specify: "",
+    },
+    estimatedBldgDmg: {
+      radioOptions: "",
+      comment: "",
+    },
+    posting: {
+      radioOptions: "",
+    },
+    useAndEntry: {
+      specify: "",
     },
   });
-
-  const handleChange1 = (field, value) => {
-    setFormData((prevData) => ({ ...prevData, [field]: value }));
-  };
 
   const handleChange = (section, field) => (e) => {
     const { value } = e.target;
@@ -55,21 +77,108 @@ const Multiform = () => {
       },
     }));
   };
+
+  const handleRadioChangePosting = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      posting: {
+        ...prevData.posting,
+        radioOptions: value || "",
+      },
+    }));
+  };
+
+  const handleMultipleRadioChangeTypeofConstruction = (event) => {
+    const { value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      typeofConstruction: {
+        ...prevData.typeofConstruction,
+        radioOptions: value || "",
+      },
+    }));
+  };
+
+  const handleMultipleRadioChangePrimaryOccupancy = (event) => {
+    const { value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      primaryOccupancy: {
+        ...prevData.primaryOccupancy,
+        radioOptions: value || "",
+      },
+    }));
+  };
+  const handleMultipleRadioChangeEvaluation = (row, column) => (event) => {
+    setFormData((prev) => ({
+      ...prev,
+      evaluation: {
+        ...prev.evaluation,
+        [row]: event.target.value,
+      },
+    }));
+  };
+  const handleMultipleRadioChangeestimatedBldgDmg = (event) => {
+    const { value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      estimatedBldgDmg: {
+        ...prevData.estimatedBldgDmg,
+        radioOptions: value || "",
+      },
+    }));
+  };
+  const handleDateChange = (date) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      inspection: {
+        ...prevData.inspection,
+        date: date,
+      },
+    }));
+  };
+
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultiStep([
       <InspectionForm
         formData={formData}
         onChange={handleChange}
         handleRadioChange={handleRadioChange}
+        handleDateChange={handleDateChange}
       />,
       <BuildingDescription formData={formData} onChange={handleChange} />,
-      <TypeofConstruction />,
-      <PrimaryOccupancy />,
-      <Evaluation />,
-      <EstimatedBldgDmg />,
-      <Posting />,
-      <UseAndEntry />,
-      <UseAndEntryFurtherAction />,
+      <TypeofConstruction
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeTypeofConstruction}
+      />,
+      <PrimaryOccupancy
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangePrimaryOccupancy}
+      />,
+      <Evaluation
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeEvaluation}
+      />,
+      <EstimatedBldgDmg
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeestimatedBldgDmg}
+      />,
+      <Posting
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleRadioChangePosting}
+      />,
+      <UseAndEntry formData={formData} onChange={handleChange} />,
+      <UseAndEntryFurtherAction
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeTypeofConstruction}
+      />,
       <OverAllHazards />,
       <StructuralHazards />,
       <NonStructuralHazards />,

@@ -2,21 +2,20 @@ import React, { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-const TremorDateTimePicker = () => {
+const TremorDateTimePicker = ({ value, onChange }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    console.log(selectedDate);
   };
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        {/* <DateTimePicker label="Inspection Date and Time" /> */}
         <DateTimePicker
           label="Inspection Date and Time"
-          value={selectedDate}
-          onChange={handleDateChange}
+          value={value}
+          onChange={onChange}
+          name="inspectionDate"
         />
       </LocalizationProvider>
     </div>

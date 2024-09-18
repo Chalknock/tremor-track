@@ -49,7 +49,7 @@ const TremorDrawer = () => {
   ];
   const drawer = (
     <div>
-      <Toolbar />
+      {!mobileOpen && <Toolbar />}
       <Divider />
       <List>
         {drawerItems.map((text, index) => (
@@ -61,19 +61,6 @@ const TremorDrawer = () => {
           </ListItem>
         ))}
       </List>
-      {/* <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
     </div>
   );
   return (
@@ -96,7 +83,16 @@ const TremorDrawer = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          {/* <Typography variant="h6" noWrap component="div">
+            ATC-20
+          </Typography> */}
+
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            className="row justify-content-center w-100"
+          >
             ATC-20
           </Typography>
         </Toolbar>
@@ -123,6 +119,14 @@ const TremorDrawer = () => {
             },
           }}
         >
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            className="row justify-content-center p-2 m-1"
+          >
+            ATC-20
+          </Typography>
           {drawer}
         </Drawer>
         <Drawer

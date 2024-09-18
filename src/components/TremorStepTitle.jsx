@@ -6,7 +6,7 @@ const TremorStepTitle = (props) => {
   return (
     <div>
       <Typography
-        className="row"
+        className="row text-center"
         justifyContent={"center"}
         sx={{ fontSize: "20px", fontWeight: "bold" }}
       >

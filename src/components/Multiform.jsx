@@ -179,10 +179,26 @@ const Multiform = () => {
         onChange={handleChange}
         handleRadioChange={handleMultipleRadioChangeTypeofConstruction}
       />,
-      <OverAllHazards />,
-      <StructuralHazards />,
-      <NonStructuralHazards />,
-      <GeoTechnicalHazards />,
+      <OverAllHazards
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeEvaluation}
+      />,
+      <StructuralHazards
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeEvaluation}
+      />,
+      <NonStructuralHazards
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeEvaluation}
+      />,
+      <GeoTechnicalHazards
+        formData={formData}
+        onChange={handleChange}
+        handleRadioChange={handleMultipleRadioChangeEvaluation}
+      />,
       <EstimatedBldgDmgPhotos />,
     ]);
 

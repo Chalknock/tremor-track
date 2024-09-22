@@ -102,6 +102,7 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
                         <FormControlLabel
                           control={
                             <Checkbox
+                            className="d-none"
                               checked={isOtherChecked}
                               onChange={handleCheckboxChange}
                             />

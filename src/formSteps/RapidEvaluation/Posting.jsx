@@ -7,12 +7,13 @@ import {
 } from "@mui/material";
 import React from "react";
 import TremorStepTitle from "../../components/TremorStepTitle";
+import TremorFormLabel from "../../components/TremorFormLabel";
 
 const Posting = ({ formData, onChange, handleRadioChange }) => {
   return (
     <div>
       <TremorStepTitle name={"POSTING"} />
-      <FormLabel
+      {/* <FormLabel
         id="estimatedBldgDmg-radio-buttons-group"
         style={{
           background: "lightGray",
@@ -24,7 +25,10 @@ const Posting = ({ formData, onChange, handleRadioChange }) => {
         conditions endangering the overall building are grounds for an Unsafe
         posting. Localized Severe and overall Moderate conditions may allow a
         Restricted Use posting.
-      </FormLabel>
+      </FormLabel> */}
+      <TremorFormLabel label = {"Choose a posting based on the evaluation and team judgment. \
+      Severe conditions endangering the overall building are grounds for an Unsafe \
+      posting. Localized Severe and overall Moderate conditions may allow a Restricted Use posting."}/>
       <FormControl className="">
         <RadioGroup
           aria-labelledby="AreasInspected-radio-buttons-group"

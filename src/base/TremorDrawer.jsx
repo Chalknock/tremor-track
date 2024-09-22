@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -20,6 +20,9 @@ import Typography from "@mui/material/Typography";
 import Multiform from "../components/Multiform";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { AssuredWorkload, Checklist, Summarize } from "@mui/icons-material";
+import { TestAccount } from "../components/test/TestAccount";
+import { TestReport } from "../components/test/TestReport";
+import { TestInspection } from "../components/test/TestInspection";
 const drawerWidth = 240;
 
 const TremorDrawer = () => {
@@ -40,13 +43,20 @@ const TremorDrawer = () => {
       setMobileOpen(!mobileOpen);
     }
   };
-  const drawerItems = ["Evaluate", "Reports", "Inspection", "Account"];
-  const drawerItemsIcons = [
-    <Checklist />,
-    <Summarize />,
-    <AssuredWorkload />,
-    <AccountBoxIcon />,
-  ];
+  const drawerItems = useMemo(
+    () => ["Evaluate", "Reports", "Inspection", "Account"],
+    []
+  );
+  const drawerItemsIcons = useMemo(
+    () => [
+      <Checklist />,
+      <Summarize />,
+      <AssuredWorkload />,
+      <AccountBoxIcon />,
+    ],
+    []
+  );
+  const [selectedItem, setSelectedItem] = useState(drawerItems[0]);
   const drawer = (
     <div>
       {!mobileOpen && <Toolbar />}
@@ -54,7 +64,7 @@ const TremorDrawer = () => {
       <List>
         {drawerItems.map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => setSelectedItem(text)}>
               <ListItemIcon>{drawerItemsIcons[index]}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -102,7 +112,6 @@ const TremorDrawer = () => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -125,7 +134,7 @@ const TremorDrawer = () => {
             component="div"
             className="row justify-content-center p-2 m-1"
           >
-            ATC-20
+            ATC-20 sidebar
           </Typography>
           {drawer}
         </Drawer>
@@ -156,8 +165,10 @@ const TremorDrawer = () => {
         }}
       >
         <Toolbar />
-
-        <Multiform />
+        {selectedItem === "Evaluate" && <Multiform />}
+        {selectedItem === "Reports" && <TestReport />}
+        {selectedItem === "Inspection" && <TestInspection />}
+        {selectedItem === "Account" && <TestAccount />}
       </Box>
     </Box>
   );

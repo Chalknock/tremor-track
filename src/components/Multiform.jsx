@@ -199,7 +199,10 @@ const Multiform = () => {
         onChange={handleChange}
         handleRadioChange={handleMultipleRadioChangeEvaluation}
       />,
-      <EstimatedBldgDmgPhotos />,
+      <EstimatedBldgDmgPhotos 
+      formData={formData}
+      onChange={handleChange}
+      handleRadioChange={handleMultipleRadioChangeEvaluation}/>,
     ]);
 
   const onSubmit = (e) => {

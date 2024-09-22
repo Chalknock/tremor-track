@@ -15,6 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import TremorFormLabel from "../../components/TremorFormLabel";
 
 const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
   const rowHeaders = [
@@ -47,18 +48,7 @@ const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
   return (
     <div>
       <TremorStepTitle name={"EVALUATION"} />
-      <FormLabel
-        id="estimatedBldgDmg-radio-buttons-group"
-        style={{
-          background: "lightGray",
-          borderRadius: "20px",
-          padding: "18px",
-        }}
-      >
-        {" "}
-        Investigate the building for the conditions below and click on the
-        appropriate column.{" "}
-      </FormLabel>
+      <TremorFormLabel label = {"Investigate the building for the conditions below and click on the appropriate column."}/>
       {/* <Typography>
         {" "}
         Investigate the building for the conditions below and click on the

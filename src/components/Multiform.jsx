@@ -15,14 +15,38 @@ import NonStructuralHazards from "../formSteps/DetailedEvaluation/NonStructuralH
 import GeoTechnicalHazards from "../formSteps/DetailedEvaluation/GeoTechnicalHazards";
 import EstimatedBldgDmgPhotos from "../formSteps/DetailedEvaluation/EstimatedBldgDmgPhotos";
 import "../assets/css/multiStepForm.css";
-const Multiform = () => {
+import jsPDF from "jspdf";
+import TremorInspectedModal from "./modal/posting/TremorInspectedModal";
+import {
+  handleChange,
+  updateCoordinates,
+  handleRadioChange,
+  handleRadioChangePosting,
+  handleMultipleRadioChangeTypeofConstruction,
+  handleMultipleRadioChangePrimaryOccupancy,
+  handleMultipleRadioChangeEvaluation,
+  handleMultipleRadioChangeestimatedBldgDmg,
+  handleDateChange,
+} from "../utilities/handlers";
+import { tremorExportPdf } from "../utilities/tremorExportPdf";
+import TremorPostingAdditionalStepsModal from "./modal/posting/TremorPostingAdditionalStepsModal";
+import TremorStepTitle from "./TremorStepTitle";
+
+const Multiform = ({ setStepIndex }) => {
   const [formData, setFormData] = useState({
     inspection: {
       buildingName: "",
-      lat: "",
-      lon: "",
+      lat: NaN,
+      lon: NaN,
       date: null,
       time: null,
+      year: "",
+      month: "",
+      monthName: "",
+      day: "",
+      hour: "",
+      minute: "",
+      period: "",
       areaInspected: "",
     },
     buildingDescription: {
@@ -56,185 +80,208 @@ const Multiform = () => {
     },
   });
 
-  const handleChange = (section, field) => (e) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [section]: {
-        ...prevData[section],
-        [field]: value || "",
-      },
-    }));
-  };
-
-  const handleRadioChange = (e) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      inspection: {
-        ...prevData.inspection,
-        areaInspected: value || "",
-      },
-    }));
-  };
-
-  const handleRadioChangePosting = (e) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      posting: {
-        ...prevData.posting,
-        radioOptions: value || "",
-      },
-    }));
-  };
-
-  const handleMultipleRadioChangeTypeofConstruction = (event) => {
-    const { value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      typeofConstruction: {
-        ...prevData.typeofConstruction,
-        radioOptions: value || "",
-      },
-    }));
-  };
-
-  const handleMultipleRadioChangePrimaryOccupancy = (event) => {
-    const { value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      primaryOccupancy: {
-        ...prevData.primaryOccupancy,
-        radioOptions: value || "",
-      },
-    }));
-  };
-  const handleMultipleRadioChangeEvaluation = (row, column) => (event) => {
-    setFormData((prev) => ({
-      ...prev,
-      evaluation: {
-        ...prev.evaluation,
-        [row]: event.target.value,
-      },
-    }));
-  };
-  const handleMultipleRadioChangeestimatedBldgDmg = (event) => {
-    const { value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      estimatedBldgDmg: {
-        ...prevData.estimatedBldgDmg,
-        radioOptions: value || "",
-      },
-    }));
-  };
-  const handleDateChange = (date) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      inspection: {
-        ...prevData.inspection,
-        date: date,
-      },
-    }));
-  };
-
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultiStep([
       <InspectionForm
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleRadioChange}
-        handleDateChange={handleDateChange}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleRadioChange(setFormData)}
+        handleDateChange={handleDateChange(setFormData)}
+        updateCoordinates={updateCoordinates(setFormData)}
       />,
-      <BuildingDescription formData={formData} onChange={handleChange} />,
+      <BuildingDescription
+        formData={formData}
+        onChange={handleChange(setFormData)}
+      />,
       <TypeofConstruction
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeTypeofConstruction}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeTypeofConstruction(
+          setFormData
+        )}
       />,
       <PrimaryOccupancy
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangePrimaryOccupancy}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangePrimaryOccupancy(
+          setFormData
+        )}
       />,
       <Evaluation
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeEvaluation}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
       />,
       <EstimatedBldgDmg
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeestimatedBldgDmg}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeestimatedBldgDmg(
+          setFormData
+        )}
       />,
       <Posting
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleRadioChangePosting}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleRadioChangePosting(setFormData)}
       />,
-      <UseAndEntry formData={formData} onChange={handleChange} />,
+      <UseAndEntry formData={formData} onChange={handleChange(setFormData)} />,
       <UseAndEntryFurtherAction
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeTypeofConstruction}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeTypeofConstruction(
+          setFormData
+        )}
       />,
       <OverAllHazards
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeEvaluation}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
       />,
       <StructuralHazards
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeEvaluation}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
       />,
       <NonStructuralHazards
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeEvaluation}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
       />,
       <GeoTechnicalHazards
         formData={formData}
-        onChange={handleChange}
-        handleRadioChange={handleMultipleRadioChangeEvaluation}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
       />,
-      <EstimatedBldgDmgPhotos 
-      formData={formData}
-      onChange={handleChange}
-      handleRadioChange={handleMultipleRadioChangeEvaluation}/>,
+      <EstimatedBldgDmgPhotos
+        formData={formData}
+        onChange={handleChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
+      />,
     ]);
+  const [confirmOpenOptional, setConfirmOpenOptional] = useState(false);
+  const [postingOptionalmessage, setPostingOptionalmessage] = useState("");
+  const [postingOptionaltitle, setPostingOptionaltitle] = useState("");
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (isLastStep) {
       alert("Successful Account Creation");
 
+      // tremorExportPdf({ formData });
       console.log(formData);
     } else {
-      next();
+      // next();
+      // console.log("formData");
+      // setStepIndex(currentStepIndex);
+      if (currentStepIndex + 2 === 8) {
+        let postingRadioState = formData.posting.radioOptions;
+        switch (postingRadioState) {
+          case "INSPECTED":
+            setConfirmOpen(true);
+            setTitle("BUILDING IS MARKED AS SAFE");
+            setMessage(
+              "There is no longer a requirement to complete the subsequent pages.Tap Continue to save inspection"
+            );
+            break;
+          case "RESTRICTED USE":
+            next();
+            break;
+          case "UNSAFE":
+            next();
+            break;
+        }
+      } else if (currentStepIndex + 2 === 10) {
+        let postingRadioState = formData.posting.radioOptions;
+        switch (postingRadioState) {
+          case "RESTRICTED USE":
+            next();
+            break;
+          case "UNSAFE":
+            setConfirmOpenOptional(true);
+            setPostingOptionaltitle("BUILDING IS MARKED AS UNSAFE");
+            setPostingOptionalmessage(
+              "There is no longer a requirement to complete the subsequent pages.Tap Continue to save inspection"
+            );
+            next();
+            break;
+        }
+      } else if (
+        currentStepIndex + 2 > 10 &&
+        formData.posting.radioOptions != "RESTRICTED USE"
+      ) {
+        console.log("finish");
+      } else {
+        next();
+      }
     }
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={onSubmit} className="multi-step-form">
-        {step}
-        <div className="navigation-buttons">
-          {!isFirstStep && (
-            <button type="button" onClick={back} aria-label="Go back">
-              Back
+    <>
+      <div className="form-container">
+        <form onSubmit={onSubmit} className="multi-step-form">
+          {step}
+          <div className="navigation-buttons">
+            {!isFirstStep && (
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={back}
+                aria-label="Go back"
+              >
+                Back
+              </button>
+            )}
+            <div className="step-info">
+              {currentStepIndex + 1} of {steps.length}
+            </div>
+            <button
+              className="btn btn-primary"
+              type="submit"
+              aria-label={isLastStep ? "Finish" : "Next"}
+            >
+              {isLastStep ? "Finish" : "Next"}
             </button>
-          )}
-          <div className="step-info">
-            {currentStepIndex + 1} of {steps.length}
           </div>
-          <button type="submit" aria-label={isLastStep ? "Finish" : "Next"}>
-            {isLastStep ? "Finish" : "Next"}
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+        {confirmOpen && (
+          <TremorInspectedModal
+            open={confirmOpen}
+            onClose={() => setConfirmOpen(false)}
+            onConfirm={() => {
+              // Handle confirmation logic
+              setConfirmOpen(false);
+              next();
+            }}
+            onSave={() => {
+              tremorExportPdf({ formData });
+            }}
+            message={message}
+            title={title}
+          />
+        )}
+        {confirmOpenOptional && (
+          <TremorPostingAdditionalStepsModal
+            open={confirmOpenOptional}
+            onClose={() => setConfirmOpenOptional(false)}
+            onConfirm={() => {
+              // Handle confirmation logic
+              setConfirmOpenOptional(false);
+              next();
+            }}
+            onSave={() => {
+              tremorExportPdf({ formData });
+            }}
+            message={postingOptionalmessage}
+            title={postingOptionaltitle}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

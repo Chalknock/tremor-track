@@ -19,6 +19,7 @@ const InspectionForm = ({
   onChange,
   handleRadioChange,
   handleDateChange,
+  updateCoordinates,
 }) => {
   const handleInputChange = (field) => (e) => {
     onChange("inspection", field)(e);
@@ -74,8 +75,8 @@ const InspectionForm = ({
         <br />
         <div className="px-1">
           <TremortMapContainer
-            value={formData.inspection.lat || ""}
-            onChange={handleInputChange("lat")}
+            formData={formData.inspection}
+            updateCoordinates={updateCoordinates}
           />
         </div>
         <div className="row mt-4 mx-1 p-0">

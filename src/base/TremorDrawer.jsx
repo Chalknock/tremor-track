@@ -23,11 +23,13 @@ import { AssuredWorkload, Checklist, Summarize } from "@mui/icons-material";
 import { TestAccount } from "../components/test/TestAccount";
 import { TestReport } from "../components/test/TestReport";
 import { TestInspection } from "../components/test/TestInspection";
+import { useMultiStep } from "../utilities/useMultiStep";
 const drawerWidth = 240;
 
 const TremorDrawer = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
   false;
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -103,7 +105,7 @@ const TremorDrawer = () => {
             component="div"
             className="row justify-content-center w-100"
           >
-            ATC-20
+            ATC-20 {stepIndex}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -165,7 +167,9 @@ const TremorDrawer = () => {
         }}
       >
         <Toolbar />
-        {selectedItem === "Evaluate" && <Multiform />}
+        {selectedItem === "Evaluate" && (
+          <Multiform currentStepIndex={() => setStepIndex} />
+        )}
         {selectedItem === "Reports" && <TestReport />}
         {selectedItem === "Inspection" && <TestInspection />}
         {selectedItem === "Account" && <TestAccount />}

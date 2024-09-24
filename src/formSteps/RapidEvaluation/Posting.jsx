@@ -26,9 +26,13 @@ const Posting = ({ formData, onChange, handleRadioChange }) => {
         posting. Localized Severe and overall Moderate conditions may allow a
         Restricted Use posting.
       </FormLabel> */}
-      <TremorFormLabel label = {"Choose a posting based on the evaluation and team judgment. \
+      <TremorFormLabel
+        label={
+          "Choose a posting based on the evaluation and team judgment. \
       Severe conditions endangering the overall building are grounds for an Unsafe \
-      posting. Localized Severe and overall Moderate conditions may allow a Restricted Use posting."}/>
+      posting. Localized Severe and overall Moderate conditions may allow a Restricted Use posting."
+        }
+      />
       <FormControl className="">
         <RadioGroup
           aria-labelledby="AreasInspected-radio-buttons-group"

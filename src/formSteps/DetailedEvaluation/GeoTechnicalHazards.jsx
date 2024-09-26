@@ -15,7 +15,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
+import TremorFormLabel from "../../components/TremorFormLabel";
+const GeoTechnicalHazards = ({
+  formData,
+  onOthers,
+  onChange,
+  handleRadioChange,
+}) => {
   const rowHeaders = [
     "Slope failure, debris",
     "Ground movement, fissures",
@@ -23,9 +29,8 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
   ];
   const columns = ["Minor/None", "Moderate", "Severe"];
   const handleInputChange = (field) => (e) => {
-    onChange(field)(e);
+    onOthers("geoTechnicalHazards", field)(e);
   };
-
   const handleChange = (row, column) => (event) => {
     setSelectedValues((prev) => ({
       ...prev,
@@ -35,17 +40,35 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
   };
 
   const handleOthersSpecChange = (field) => (e) => {
-    onChange("evaluation", field)(e);
+    onChange("geoTechnicalHazards", field)(e);
   };
 
   const [isOtherChecked, setIsOtherChecked] = useState(false);
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange1 = (event) => {
     setIsOtherChecked(event.target.checked);
+  };
+  const [selectedValues, setSelectedValues] = useState(
+    Object.fromEntries(rowHeaders.map((row) => [row, ""]))
+  );
+
+  const [checkedStates, setCheckedStates] = useState({});
+
+  const handleCheckboxChange = (row) => (event) => {
+    setCheckedStates((prev) => ({
+      ...prev,
+      [row]: event.target.checked,
+    }));
   };
   return (
     <div>
       <TremorStepTitle name={"EVALUATION"} />
+
+      <TremorFormLabel
+        label={
+          "Investigate the building for the conditions below and click on the appropriate column."
+        }
+      />
       <Typography>GEOTECHNICAL HAZARDS</Typography>
       <TableContainer component={Paper}>
         <Table>
@@ -65,7 +88,7 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
                 <TableCell component="th" scope="row">
                   {row === "Others" ? (
                     <div
-                      style={{ display: "flex", alignItems: "center" }}
+                      style={{ display: "block", alignItems: "center" }}
                       className="row"
                     >
                       <span className="mb-2">{row}</span>
@@ -73,11 +96,12 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
                         style={{
                           marginLeft: "8px",
                           flex: 1,
+                          marginTop: "10px",
                         }}
                         label="Specify"
                         variant="outlined"
-                        value={formData.evaluation.specify}
-                        onChange={handleOthersSpecChange("specify")}
+                        value={formData.geoTechnicalHazards.specify}
+                        onChange={handleInputChange("specify")}
                       />
                     </div>
                   ) : (
@@ -86,56 +110,47 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
                 </TableCell>
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`} align="center">
-                    {column === "Severe" ? (
-                      <>
-                        <FormControlLabel
-                          control={
-                            <Radio
-                              checked={formData.evaluation[row] === column}
-                              value={column}
-                              onChange={handleRadioChange(row, column)}
-                              name={row}
-                            />
-                          }
-                          label=""
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          checked={formData.geoTechnicalHazards[row] === column}
+                          value={column}
+                          onChange={handleRadioChange(row, column)}
+                          name={row}
                         />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                            className="d-none"
-                              checked={isOtherChecked}
-                              onChange={handleCheckboxChange}
-                            />
-                          }
-                          label="Add comment "
-                        />
-                        {isOtherChecked && (
-                          <div className="col mt-2 ps-4">
-                            <TextField
-                              name="typeOfConstructionRadioSpecify"
-                              fullWidth
-                              label="Specify"
-                              variant="outlined"
-                              required
-                              value={formData.typeofConstruction.specify || ""}
-                              onChange={handleInputChange("specify")}
-                            />
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <FormControlLabel
-                        control={
-                          <Radio
-                            checked={formData.evaluation[row] === column}
-                            value={column}
-                            onChange={handleRadioChange(row, column)}
-                            name={row}
+                      }
+                    />
+                    {column === "Severe" &&
+                      formData.geoTechnicalHazards[row] === "Severe" && (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                className="d-none"
+                                checked={checkedStates[row] || false}
+                                onChange={handleCheckboxChange(row)}
+                              />
+                            }
+                            label="Add comment"
                           />
-                        }
-                        label=""
-                      />
-                    )}
+                          {checkedStates[row] && (
+                            <div className="mt-2">
+                              <TextField
+                                name="typeOfConstructionRadioSpecify"
+                                fullWidth
+                                label="Specify"
+                                variant="outlined"
+                                required
+                                value={
+                                  formData.geoTechnicalHazards.comment[row] ||
+                                  ""
+                                }
+                                onChange={handleOthersSpecChange(row)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -151,8 +166,8 @@ const GeoTechnicalHazards = ({ formData, onChange, handleRadioChange }) => {
           multiline
           maxRows={10}
           style={{ marginTop: "20px" }}
-          // value={formData.estimatedBldgDmg.comment || ""}
-          // onChange={handleInputChange("comment")}
+          value={formData.geoTechnicalHazards.mainComment || ""}
+          onChange={handleInputChange("mainComment")}
         />
       </div>
     </div>

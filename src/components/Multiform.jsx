@@ -30,6 +30,9 @@ import {
   handleDateChange,
   handleMultipleRadioChangeStructuralHazards,
   handleMultipleRadioChangeOverAllHazards,
+  handleMultipleRadioChangeNonStructuralHazards,
+  handleMultipleRadioChangeGeoTechnicalHazards,
+  handleMultipleRadioChangeUseAndEntryFurtherAction,
 } from "../utilities/handlers";
 import { tremorExportPdf } from "../utilities/tremorExportPdf";
 import TremorPostingAdditionalStepsModal from "./modal/posting/TremorPostingAdditionalStepsModal";
@@ -62,6 +65,8 @@ const Multiform = ({ setStepIndex }) => {
     },
     typeofConstruction: {
       radioOptions: "",
+      barricade: "",
+      recommendation: "",
       specify: "",
     },
     primaryOccupancy: {
@@ -81,6 +86,13 @@ const Multiform = ({ setStepIndex }) => {
     useAndEntry: {
       specify: "",
     },
+    useAndEntryFurtherAction: {
+      radioOptions: "",
+      barricade: "",
+      recommendation: "",
+      specify: "",
+      mainComment: "",
+    },
     overAllHazards: {
       radioOptions: "",
       specify: "",
@@ -89,6 +101,18 @@ const Multiform = ({ setStepIndex }) => {
     structuralHazards: {
       radioOptions: "",
       specify: "",
+      comment: { add: "" },
+    },
+    nonStructuralHazards: {
+      radioOptions: "",
+      specify: "",
+      comment: { add: "" },
+    },
+    geoTechnicalHazards: {
+      radioOptions: "",
+      specify: "",
+      comment: { add: "" },
+      mainComment: "",
     },
   });
 
@@ -140,31 +164,39 @@ const Multiform = ({ setStepIndex }) => {
       <UseAndEntryFurtherAction
         formData={formData}
         onChange={handleChange(setFormData)}
-        handleRadioChange={handleMultipleRadioChangeTypeofConstruction(
+        handleRadioChange={handleMultipleRadioChangeUseAndEntryFurtherAction(
           setFormData
         )}
       />,
       <OverAllHazards
         formData={formData}
+        onOthers={handleChange(setFormData)}
         onChange={handleCommentChange(setFormData)}
         handleRadioChange={handleMultipleRadioChangeOverAllHazards(setFormData)}
       />,
       <StructuralHazards
         formData={formData}
-        onChange={handleChange(setFormData)}
+        onOthers={handleChange(setFormData)}
+        onChange={handleCommentChange(setFormData)}
         handleRadioChange={handleMultipleRadioChangeStructuralHazards(
           setFormData
         )}
       />,
       <NonStructuralHazards
         formData={formData}
-        onChange={handleChange(setFormData)}
-        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
+        onOthers={handleChange(setFormData)}
+        onChange={handleCommentChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeNonStructuralHazards(
+          setFormData
+        )}
       />,
       <GeoTechnicalHazards
         formData={formData}
-        onChange={handleChange(setFormData)}
-        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
+        onOthers={handleChange(setFormData)}
+        onChange={handleCommentChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeGeoTechnicalHazards(
+          setFormData
+        )}
       />,
       <EstimatedBldgDmgPhotos
         formData={formData}
@@ -227,6 +259,7 @@ const Multiform = ({ setStepIndex }) => {
         currentStepIndex + 2 > 10 &&
         formData.posting.radioOptions != "RESTRICTED USE"
       ) {
+        console.log("final");
       } else {
         console.log(formData);
         next();

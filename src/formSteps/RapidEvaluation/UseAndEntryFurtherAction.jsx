@@ -18,7 +18,7 @@ const UseAndEntryFurtherAction = ({
   handleRadioChange,
 }) => {
   const handleInputChange = (field) => (e) => {
-    onChange("typeofConstruction", field)(e);
+    onChange("useAndEntryFurtherAction", field)(e);
   };
   const [isOtherChecked, setIsOtherChecked] = useState(false);
 
@@ -45,13 +45,13 @@ const UseAndEntryFurtherAction = ({
         </FormLabel>
         <TextField
           margin="normal"
-          name="typeOfConstructionRadioSpecify"
+          name="useAndEntryFurtherActionRadioSpecify"
           fullWidth
           label="Specify"
           variant="outlined"
           required={false}
-          value={formData.typeofConstruction.specify || ""}
-          onChange={handleInputChange("specify")}
+          value={formData.useAndEntryFurtherAction.barricade || ""}
+          onChange={handleInputChange("barricade")}
         />
 
         <FormControl>
@@ -60,14 +60,14 @@ const UseAndEntryFurtherAction = ({
           </FormLabel>
           <RadioGroup
             aria-labelledby="type-of-construction-radio-buttons-group"
-            name="typeOfConstruction"
-            value={formData.typeofConstruction.radioOptions || ""}
+            name="useAndEntryFurtherAction"
+            value={formData.useAndEntryFurtherAction.radioOptions || ""}
             onChange={handleRadioChange}
             sx={{ paddingLeft: "20px" }}
           >
             {radioOptions.map((option) => (
               <FormControlLabel
-                name="typeOfConstructionRadio"
+                name="useAndEntryFurtherActionRadio"
                 key={option}
                 value={option}
                 control={<Radio />}
@@ -76,21 +76,21 @@ const UseAndEntryFurtherAction = ({
               />
             ))}
             <FormControlLabel
-              name="typeOfConstructionRadio"
+              name="useAndEntryFurtherActionRadio"
               value="Others"
               control={<Radio />}
               label="Others"
               required={false}
             />
-            {formData.typeofConstruction.radioOptions === "Others" && (
+            {formData.useAndEntryFurtherAction.radioOptions === "Others" && (
               <div className="col mt-2">
                 <TextField
-                  name="typeOfConstructionRadioSpecify"
+                  name="useAndEntryFurtherActionRadioSpecify"
                   fullWidth
                   label="Specify"
                   variant="outlined"
                   required
-                  value={formData.typeofConstruction.specify || ""}
+                  value={formData.useAndEntryFurtherAction.specify || ""}
                   onChange={handleInputChange("specify")}
                 />
               </div>
@@ -99,8 +99,8 @@ const UseAndEntryFurtherAction = ({
 
           <RadioGroup
             aria-labelledby="type-of-construction-radio-buttons-group"
-            name="typeOfConstruction"
-            // value={formData.typeofConstruction.radioOptions || ""}
+            name="useAndEntryFurtherAction"
+            // value={formData.useAndEntryFurtherAction.radioOptions || ""}
             // onChange={handleRadioChange}
           >
             <FormControlLabel
@@ -115,13 +115,13 @@ const UseAndEntryFurtherAction = ({
             {isOtherChecked && (
               <div className="col mt-2 ps-4">
                 <TextField
-                  name="typeOfConstructionRadioSpecify"
+                  name="useAndEntryFurtherActionRadioSpecify"
                   fullWidth
                   label="Specify"
                   variant="outlined"
                   required
-                  value={formData.typeofConstruction.specify || ""}
-                  onChange={handleInputChange("specify")}
+                  value={formData.useAndEntryFurtherAction.recommendation || ""}
+                  onChange={handleInputChange("recommendation")}
                 />
               </div>
             )}
@@ -134,8 +134,8 @@ const UseAndEntryFurtherAction = ({
             multiline
             maxRows={10}
             style={{ marginTop: "20px" }}
-            // value={formData.estimatedBldgDmg.comment || ""}
-            // onChange={handleInputChange("comment")}
+            value={formData.useAndEntryFurtherAction.mainComment || ""}
+            onChange={handleInputChange("mainComment")}
           />
         </FormControl>
       </FormGroup>

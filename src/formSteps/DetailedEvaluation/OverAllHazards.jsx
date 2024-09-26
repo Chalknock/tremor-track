@@ -17,17 +17,22 @@ import {
 } from "@mui/material";
 import TremorFormLabel from "../../components/TremorFormLabel";
 
-const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
+const OverAllHazards = ({
+  formData,
+  onOthers,
+  onChange,
+  handleRadioChange,
+}) => {
   const rowHeaders = [
     "Collapse or partial collapse",
     "Building  or story leaning",
     "Others",
   ];
   const columns = ["Minor/None", "Moderate", "Severe"];
-  const handleInputChange = (field) => (e) => {
-    onChange(field)(e);
-  };
 
+  const handleInputChange = (field) => (e) => {
+    onOthers("overAllHazards", field)(e);
+  };
   const handleChange = (row, column) => (event) => {
     setSelectedValues((prev) => ({
       ...prev,
@@ -65,6 +70,9 @@ const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
           "Investigate the building for the conditions below and click on the appropriate column."
         }
       />
+      <Typography className="mb-0 pb-0">OVERALL HAZARDS</Typography>
+      <hr></hr>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -81,7 +89,27 @@ const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
             {rowHeaders.map((row) => (
               <TableRow key={row}>
                 <TableCell component="th" scope="row">
-                  {row}
+                  {row === "Others" ? (
+                    <div
+                      style={{ display: "block", alignItems: "center" }}
+                      className="row"
+                    >
+                      <span className="mb-2">{row}</span>
+                      <TextField
+                        style={{
+                          marginLeft: "8px",
+                          flex: 1,
+                          marginTop: "10px",
+                        }}
+                        label="Specify"
+                        variant="outlined"
+                        value={formData.overAllHazards.specify}
+                        onChange={handleInputChange("specify")}
+                      />
+                    </div>
+                  ) : (
+                    row
+                  )}
                 </TableCell>
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`} align="center">
@@ -94,35 +122,37 @@ const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
                           name={row}
                         />
                       }
-                      label={column}
                     />
-                    {column === "Severe" && (
-                      <>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              className="d-none"
-                              checked={checkedStates[row] || false}
-                              onChange={handleCheckboxChange(row)}
-                            />
-                          }
-                          label="Add comment"
-                        />
-                        {checkedStates[row] && (
-                          <div className="mt-2">
-                            <TextField
-                              name="typeOfConstructionRadioSpecify"
-                              fullWidth
-                              label="Specify"
-                              variant="outlined"
-                              required
-                              value={formData.overAllHazards.comment[row] || ""}
-                              onChange={handleOthersSpecChange(row)}
-                            />
-                          </div>
-                        )}
-                      </>
-                    )}
+                    {column === "Severe" &&
+                      formData.overAllHazards[row] === "Severe" && (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                className="d-none"
+                                checked={checkedStates[row] || false}
+                                onChange={handleCheckboxChange(row)}
+                              />
+                            }
+                            label="Add comment"
+                          />
+                          {checkedStates[row] && (
+                            <div className="mt-2">
+                              <TextField
+                                name="typeOfConstructionRadioSpecify"
+                                fullWidth
+                                label="Specify"
+                                variant="outlined"
+                                required
+                                value={
+                                  formData.overAllHazards.comment[row] || ""
+                                }
+                                onChange={handleOthersSpecChange(row)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                   </TableCell>
                 ))}
               </TableRow>

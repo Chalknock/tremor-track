@@ -16,7 +16,12 @@ import {
   Typography,
 } from "@mui/material";
 import TremorFormLabel from "../../components/TremorFormLabel";
-const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
+const StructuralHazards = ({
+  formData,
+  onOthers,
+  onChange,
+  handleRadioChange,
+}) => {
   const rowHeaders = [
     "Foundations",
     "Roofs, floors (vertical loads)",
@@ -27,8 +32,11 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
     "Others",
   ];
   const columns = ["Minor/None", "Moderate", "Severe"];
-  const handleInputChange = (field) => (e) => {
+  const handleInputChangeold = (field) => (e) => {
     onChange(field)(e);
+  };
+  const handleInputChange = (field) => (e) => {
+    onOthers("structuralHazards", field)(e);
   };
 
   const handleOthersSpecChange = (field) => (e) => {
@@ -40,6 +48,9 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
   const handleCheckboxChange1 = (event) => {
     setIsOtherChecked(event.target.checked);
   };
+  const [selectedValues, setSelectedValues] = useState(
+    Object.fromEntries(rowHeaders.map((row) => [row, ""]))
+  );
 
   const [checkedStates, setCheckedStates] = useState({});
 
@@ -58,6 +69,8 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
           "Investigate the building for the conditions below and click on the appropriate column."
         }
       />
+      <Typography className="mb-0 pb-0">STRUCTURAL HAZARDS</Typography>
+      <hr></hr>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -76,7 +89,7 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                 <TableCell component="th" scope="row">
                   {row === "Others" ? (
                     <div
-                      style={{ display: "flex", alignItems: "center" }}
+                      style={{ display: "block", alignItems: "center" }}
                       className="row"
                     >
                       <span className="mb-2">{row}</span>
@@ -84,11 +97,12 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                         style={{
                           marginLeft: "8px",
                           flex: 1,
+                          marginTop: "10px",
                         }}
                         label="Specify"
                         variant="outlined"
                         value={formData.structuralHazards.specify}
-                        onChange={handleOthersSpecChange("specify")}
+                        onChange={handleInputChange("specify")}
                       />
                     </div>
                   ) : (
@@ -97,58 +111,46 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                 </TableCell>
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`} align="center">
-                    {column === "Severe" ? (
-                      <>
-                        <FormControlLabel
-                          control={
-                            <Radio
-                              checked={
-                                formData.structuralHazards[row] === column
-                              }
-                              value={column}
-                              onChange={handleRadioChange(row, column)}
-                              name={row}
-                            />
-                          }
-                          label=""
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          checked={formData.structuralHazards[row] === column}
+                          value={column}
+                          onChange={handleRadioChange(row, column)}
+                          name={row}
                         />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              className="d-none"
-                              checked={checkedStates[row] || false}
-                              onChange={handleCheckboxChange(row)}
-                            />
-                          }
-                          label="Add comment "
-                        />
-                        {isOtherChecked && (
-                          <div className="col mt-2 ps-4">
-                            <TextField
-                              name="typeOfConstructionRadioSpecify"
-                              fullWidth
-                              label="Specify"
-                              variant="outlined"
-                              required
-                              value={formData.structuralHazards.specify || ""}
-                              onChange={handleInputChange("specify")}
-                            />
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <FormControlLabel
-                        control={
-                          <Radio
-                            checked={formData.structuralHazards[row] === column}
-                            value={column}
-                            onChange={handleRadioChange(row, column)}
-                            name={row}
+                      }
+                    />
+                    {column === "Severe" &&
+                      formData.structuralHazards[row] === "Severe" && (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                className="d-none"
+                                checked={checkedStates[row] || false}
+                                onChange={handleCheckboxChange(row)}
+                              />
+                            }
+                            label="Add comment"
                           />
-                        }
-                        label=""
-                      />
-                    )}
+                          {checkedStates[row] && (
+                            <div className="mt-2">
+                              <TextField
+                                name="typeOfConstructionRadioSpecify"
+                                fullWidth
+                                label="Specify"
+                                variant="outlined"
+                                required
+                                value={
+                                  formData.structuralHazards.comment[row] || ""
+                                }
+                                onChange={handleOthersSpecChange(row)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                   </TableCell>
                 ))}
               </TableRow>

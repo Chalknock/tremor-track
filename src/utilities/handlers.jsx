@@ -102,11 +102,45 @@ export const handleMultipleRadioChangeOverAllHazards =
   };
 export const handleMultipleRadioChangeStructuralHazards =
   (setFormData) => (row, column) => (event) => {
+    console.log(row);
     setFormData((prev) => ({
       ...prev,
       structuralHazards: {
         ...prev.structuralHazards,
         [row]: event.target.value,
+      },
+    }));
+  };
+export const handleMultipleRadioChangeNonStructuralHazards =
+  (setFormData) => (row, column) => (event) => {
+    console.log(row);
+    setFormData((prev) => ({
+      ...prev,
+      nonStructuralHazards: {
+        ...prev.nonStructuralHazards,
+        [row]: event.target.value,
+      },
+    }));
+  };
+export const handleMultipleRadioChangeGeoTechnicalHazards =
+  (setFormData) => (row, column) => (event) => {
+    console.log(row);
+    setFormData((prev) => ({
+      ...prev,
+      geoTechnicalHazards: {
+        ...prev.geoTechnicalHazards,
+        [row]: event.target.value,
+      },
+    }));
+  };
+export const handleMultipleRadioChangeUseAndEntryFurtherAction =
+  (setFormData) => (event) => {
+    const { value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      useAndEntryFurtherAction: {
+        ...prevData.useAndEntryFurtherAction,
+        radioOptions: value || "",
       },
     }));
   };

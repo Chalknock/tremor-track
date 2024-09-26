@@ -1,39 +1,59 @@
+import { PhotoCamera } from "@mui/icons-material";
 import {
+  Typography,
   FormControl,
   InputLabel,
-  MenuItem,
-  MenuList,
   Select,
-  Typography,
+  MenuItem,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
-import { Button } from "bootstrap";
 import React, { useState } from "react";
 
 const EstimatedBldgDmgPhotos = () => {
   const [image, setImage] = useState([]);
+  const [percentage, setPercentage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
 
   const handleImageChange = (e) => {
     const files = e.target.files;
     console.log(files);
 
-    const imageArray = [];
-
     if (files.length > 0) {
       Array.from(files).forEach((file) => {
         const reader = new FileReader();
         reader.onloadend = () => {
-          imageArray.push(reader.result);
-          setImage((prevImages) => [...prevImages, reader.result]); // Update state
+          setImage((prevImages) => [...prevImages, reader.result]);
         };
         reader.readAsDataURL(file);
       });
     }
   };
 
-  const [age, setAge] = useState("");
-
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setPercentage(event.target.value);
+  };
+
+  const handleOpenModal = (img) => {
+    setSelectedImage(img);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleRemoveImage = (index) => {
+    setImage((prevImages) => prevImages.filter((_, i) => i !== index));
   };
   const dropDownOptions = [
     "None",
@@ -44,17 +64,20 @@ const EstimatedBldgDmgPhotos = () => {
     "60-100%",
     "100%",
   ];
+
   return (
     <div>
       <Typography className="text-start">
         Estimated Building Damage (excluding contents)
       </Typography>
-      <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
+      <FormControl variant="filled" sx={{ m: 1, minWidth: "100%" }}>
+        <InputLabel id="demo-simple-select-filled-label">
+          Choose . . .
+        </InputLabel>
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
-          value={age}
+          value={percentage}
           onChange={handleChange}
         >
           {dropDownOptions.map((val) => (
@@ -65,22 +88,74 @@ const EstimatedBldgDmgPhotos = () => {
         </Select>
       </FormControl>
       <div>
-        <h2>Upload or Capture an Image</h2>
-        <input
+        <Typography className="text-start">Sketch or Photos</Typography>
+        {/* <input
           type="file"
           multiple
           accept="image/*"
           onChange={handleImageChange}
+        /> */}
+        <label
+          htmlFor="file-input"
+          style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+        >
+          <PhotoCamera sx={{ fontSize: "40px", marginRight: "10px" }} />
+          {/* <span>Upload Image</span> */}
+        </label>{" "}
+        <input
+          id="file-input"
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ display: "none" }} // Hide the default input
         />
-        {image.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt={`Selected ${index}`}
-            style={{ width: "300px", height: "auto" }}
-          />
-        ))}
+        <div style={{ display: "flex", flexWrap: "wrap", marginTop: "20px" }}>
+          {image.map((img, index) => (
+            <Card key={index} sx={{ width: "300px", margin: "10px" }}>
+              <CardMedia
+                component="img"
+                height="auto"
+                image={img}
+                alt={`Selected ${index}`}
+              />
+              <CardContent>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleOpenModal(img)}
+                  sx={{ marginRight: "10px" }}
+                >
+                  View
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  Remove
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
+
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>View Image</DialogTitle>
+        <DialogContent>
+          <img
+            src={selectedImage}
+            alt="Selected"
+            style={{ width: "100%", height: "auto" }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

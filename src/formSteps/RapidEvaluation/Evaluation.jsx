@@ -46,7 +46,7 @@ const Evaluation = ({ formData, onChange, handleRadioChange }) => {
   };
 
   return (
-    <div>
+    <div className="mb-4">
       <TremorStepTitle name={"EVALUATION"} />
       <Typography>
         {" "}

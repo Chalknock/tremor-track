@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const TestReport = () => {
-  return (
-    <div>TestReport</div>
-  )
-}
+  return <div className="form-container"></div>;
+};

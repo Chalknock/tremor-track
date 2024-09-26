@@ -31,28 +31,33 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
     onChange(field)(e);
   };
 
-  const handleChange = (row, column) => (event) => {
-    setSelectedValues((prev) => ({
-      ...prev,
-      [row]: event.target.value,
-    }));
-    handleRadioChange(row, column)(event);
-  };
-
   const handleOthersSpecChange = (field) => (e) => {
-    onChange("evaluation", field)(e);
+    onChange("structuralHazards", field)(e);
   };
 
   const [isOtherChecked, setIsOtherChecked] = useState(false);
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange1 = (event) => {
     setIsOtherChecked(event.target.checked);
   };
+
+  const [checkedStates, setCheckedStates] = useState({});
+
+  const handleCheckboxChange = (row) => (event) => {
+    setCheckedStates((prev) => ({
+      ...prev,
+      [row]: event.target.checked,
+    }));
+  };
   return (
-    <div>
+    <div className="mb-4">
       <TremorStepTitle name={"EVALUATION"} />
-      
-      <TremorFormLabel label = {"Investigate the building for the conditions below and click on the appropriate column."}/>
+
+      <TremorFormLabel
+        label={
+          "Investigate the building for the conditions below and click on the appropriate column."
+        }
+      />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -82,7 +87,7 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                         }}
                         label="Specify"
                         variant="outlined"
-                        value={formData.evaluation.specify}
+                        value={formData.structuralHazards.specify}
                         onChange={handleOthersSpecChange("specify")}
                       />
                     </div>
@@ -97,7 +102,9 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                         <FormControlLabel
                           control={
                             <Radio
-                              checked={formData.evaluation[row] === column}
+                              checked={
+                                formData.structuralHazards[row] === column
+                              }
                               value={column}
                               onChange={handleRadioChange(row, column)}
                               name={row}
@@ -108,8 +115,9 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={isOtherChecked}
-                              onChange={handleCheckboxChange}
+                              className="d-none"
+                              checked={checkedStates[row] || false}
+                              onChange={handleCheckboxChange(row)}
                             />
                           }
                           label="Add comment "
@@ -122,7 +130,7 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                               label="Specify"
                               variant="outlined"
                               required
-                              value={formData.typeofConstruction.specify || ""}
+                              value={formData.structuralHazards.specify || ""}
                               onChange={handleInputChange("specify")}
                             />
                           </div>
@@ -132,7 +140,7 @@ const StructuralHazards = ({ formData, onChange, handleRadioChange }) => {
                       <FormControlLabel
                         control={
                           <Radio
-                            checked={formData.evaluation[row] === column}
+                            checked={formData.structuralHazards[row] === column}
                             value={column}
                             onChange={handleRadioChange(row, column)}
                             name={row}

@@ -19,6 +19,7 @@ import jsPDF from "jspdf";
 import TremorInspectedModal from "./modal/posting/TremorInspectedModal";
 import {
   handleChange,
+  handleCommentChange,
   updateCoordinates,
   handleRadioChange,
   handleRadioChangePosting,
@@ -27,6 +28,8 @@ import {
   handleMultipleRadioChangeEvaluation,
   handleMultipleRadioChangeestimatedBldgDmg,
   handleDateChange,
+  handleMultipleRadioChangeStructuralHazards,
+  handleMultipleRadioChangeOverAllHazards,
 } from "../utilities/handlers";
 import { tremorExportPdf } from "../utilities/tremorExportPdf";
 import TremorPostingAdditionalStepsModal from "./modal/posting/TremorPostingAdditionalStepsModal";
@@ -76,6 +79,15 @@ const Multiform = ({ setStepIndex }) => {
       radioOptions: "",
     },
     useAndEntry: {
+      specify: "",
+    },
+    overAllHazards: {
+      radioOptions: "",
+      specify: "",
+      comment: { add: "" },
+    },
+    structuralHazards: {
+      radioOptions: "",
       specify: "",
     },
   });
@@ -134,13 +146,15 @@ const Multiform = ({ setStepIndex }) => {
       />,
       <OverAllHazards
         formData={formData}
-        onChange={handleChange(setFormData)}
-        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
+        onChange={handleCommentChange(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeOverAllHazards(setFormData)}
       />,
       <StructuralHazards
         formData={formData}
         onChange={handleChange(setFormData)}
-        handleRadioChange={handleMultipleRadioChangeEvaluation(setFormData)}
+        handleRadioChange={handleMultipleRadioChangeStructuralHazards(
+          setFormData
+        )}
       />,
       <NonStructuralHazards
         formData={formData}
@@ -213,8 +227,8 @@ const Multiform = ({ setStepIndex }) => {
         currentStepIndex + 2 > 10 &&
         formData.posting.radioOptions != "RESTRICTED USE"
       ) {
-        console.log("finish");
       } else {
+        console.log(formData);
         next();
       }
     }
@@ -222,6 +236,31 @@ const Multiform = ({ setStepIndex }) => {
 
   return (
     <>
+      {currentStepIndex + 1 <= 10 ? (
+        <div
+          style={
+            {
+              // position: "fixed",
+              // top: "70px",
+              // left: "265px",
+              // right: "25px",
+              // zIndex: 1000,
+            }
+          }
+        >
+          <TremorStepTitle
+            name={"ATC 20 RAPID EVALUATION SAFETY ASSESSMENT FORM"}
+            background="var(--bs-primary)"
+            color="white"
+          />
+        </div>
+      ) : (
+        <TremorStepTitle
+          name={"ATC 20 DETAILED EVALUATION SAFETY ASSESSMENT FORM"}
+          background="var(--bs-primary)"
+          color="white"
+        />
+      )}
       <div className="form-container">
         <form onSubmit={onSubmit} className="multi-step-form">
           {step}

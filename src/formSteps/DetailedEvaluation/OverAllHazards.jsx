@@ -37,23 +37,34 @@ const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
   };
 
   const handleOthersSpecChange = (field) => (e) => {
-    onChange("evaluation", field)(e);
+    onChange("overAllHazards", field)(e);
   };
 
   const [isOtherChecked, setIsOtherChecked] = useState(false);
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange1 = (event) => {
     setIsOtherChecked(event.target.checked);
+  };
+  const [selectedValues, setSelectedValues] = useState(
+    Object.fromEntries(rowHeaders.map((row) => [row, ""]))
+  );
+
+  const [checkedStates, setCheckedStates] = useState({});
+
+  const handleCheckboxChange = (row) => (event) => {
+    setCheckedStates((prev) => ({
+      ...prev,
+      [row]: event.target.checked,
+    }));
   };
   return (
     <div>
       <TremorStepTitle name={"EVALUATION"} />
-      <TremorFormLabel label = {"Investigate the building for the conditions below and click on the appropriate column."}/>
-      {/* <Typography>
-        {" "}
-        Investigate the building for the conditions below and click on the
-        appropriate column.{" "}
-      </Typography> */}
+      <TremorFormLabel
+        label={
+          "Investigate the building for the conditions below and click on the appropriate column."
+        }
+      />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -70,77 +81,47 @@ const OverAllHazards = ({ formData, onChange, handleRadioChange }) => {
             {rowHeaders.map((row) => (
               <TableRow key={row}>
                 <TableCell component="th" scope="row">
-                  {row === "Others" ? (
-                    <div
-                      style={{ display: "flex", alignItems: "center" }}
-                      className="row"
-                    >
-                      <span className="mb-2">{row}</span>
-                      <TextField
-                        style={{
-                          marginLeft: "8px",
-                          flex: 1,
-                        }}
-                        label="Specify"
-                        variant="outlined"
-                        value={formData.evaluation.specify}
-                        onChange={handleOthersSpecChange("specify")}
-                      />
-                    </div>
-                  ) : (
-                    row
-                  )}
+                  {row}
                 </TableCell>
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`} align="center">
-                    {column === "Severe" ? (
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          checked={formData.overAllHazards[row] === column}
+                          value={column}
+                          onChange={handleRadioChange(row, column)}
+                          name={row}
+                        />
+                      }
+                      label={column}
+                    />
+                    {column === "Severe" && (
                       <>
                         <FormControlLabel
                           control={
-                            <Radio
-                              checked={formData.evaluation[row] === column}
-                              value={column}
-                              onChange={handleRadioChange(row, column)}
-                              name={row}
-                            />
-                          }
-                          label=""
-                        />
-                        <FormControlLabel
-                          control={
                             <Checkbox
-                              checked={isOtherChecked}
-                              onChange={handleCheckboxChange}
+                              className="d-none"
+                              checked={checkedStates[row] || false}
+                              onChange={handleCheckboxChange(row)}
                             />
                           }
-                          label="Add comment "
+                          label="Add comment"
                         />
-                        {isOtherChecked && (
-                          <div className="col mt-2 ps-4">
+                        {checkedStates[row] && (
+                          <div className="mt-2">
                             <TextField
                               name="typeOfConstructionRadioSpecify"
                               fullWidth
                               label="Specify"
                               variant="outlined"
                               required
-                              value={formData.typeofConstruction.specify || ""}
-                              onChange={handleInputChange("specify")}
+                              value={formData.overAllHazards.comment[row] || ""}
+                              onChange={handleOthersSpecChange(row)}
                             />
                           </div>
                         )}
                       </>
-                    ) : (
-                      <FormControlLabel
-                        control={
-                          <Radio
-                            checked={formData.evaluation[row] === column}
-                            value={column}
-                            onChange={handleRadioChange(row, column)}
-                            name={row}
-                          />
-                        }
-                        label=""
-                      />
                     )}
                   </TableCell>
                 ))}

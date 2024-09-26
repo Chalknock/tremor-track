@@ -49,7 +49,7 @@ const NonStructuralHazards = ({ formData, onChange, handleRadioChange }) => {
     setIsOtherChecked(event.target.checked);
   };
   return (
-    <div>
+    <div className="mb-4">
       <TremorStepTitle name={"EVALUATION"} />
       <Typography>NONSTRUCTURAL HAZARDS</Typography>
       <TableContainer component={Paper}>

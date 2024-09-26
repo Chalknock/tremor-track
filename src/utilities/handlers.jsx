@@ -8,6 +8,22 @@ export const handleChange = (setFormData) => (section, field) => (e) => {
     },
   }));
 };
+
+export const handleCommentChange = (setFormData) => (section, row) => (e) => {
+  const { value } = e.target;
+
+  setFormData((prevData) => ({
+    ...prevData,
+    [section]: {
+      ...prevData[section],
+      comment: {
+        ...prevData[section].comment, // Spread the existing comments
+        [row]: value || "", // Update the specific row comment
+      },
+    },
+  }));
+};
+
 export const updateCoordinates = (setFormData) => (lat, lon) => {
   setFormData((prevData) => ({
     ...prevData,
@@ -69,6 +85,27 @@ export const handleMultipleRadioChangeEvaluation =
       ...prev,
       evaluation: {
         ...prev.evaluation,
+        [row]: event.target.value,
+      },
+    }));
+  };
+export const handleMultipleRadioChangeOverAllHazards =
+  (setFormData) => (row, column) => (event) => {
+    console.log(row);
+    setFormData((prev) => ({
+      ...prev,
+      overAllHazards: {
+        ...prev.overAllHazards,
+        [row]: event.target.value,
+      },
+    }));
+  };
+export const handleMultipleRadioChangeStructuralHazards =
+  (setFormData) => (row, column) => (event) => {
+    setFormData((prev) => ({
+      ...prev,
+      structuralHazards: {
+        ...prev.structuralHazards,
         [row]: event.target.value,
       },
     }));

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
-import { Input, InputAdornment, TextField, Typography } from "@mui/material";
+import { Button, IconButton, TextField, Typography } from "@mui/material";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -9,10 +9,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import TremorDateTimePicker from "../../components/TremorDateTimePicker";
-import TremortMapContainer from "../../components/TremorMapContainer";
+import TremorMapContainer from "../../components/TremorMapContainer";
 import { LocationCity, LocationOn } from "@mui/icons-material";
 import TremorTextInput from "../../components/TremorTextInput";
 import TremorStepTitle from "../../components/TremorStepTitle";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 
 const InspectionForm = ({
   formData,
@@ -25,12 +26,47 @@ const InspectionForm = ({
     onChange("inspection", field)(e);
   };
 
+  const [data, setData] = useState([]);
+
+  const handleGetCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          handleInputChange("lat")({ target: { value: latitude } });
+          handleInputChange("lon")({ target: { value: longitude } });
+          updateCoordinates(latitude, longitude);
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert(
+                "Location access is denied. Please allow location access to use this feature."
+              );
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              alert("Location request timed out.");
+              break;
+            case error.UNKNOWN_ERROR:
+              alert("An unknown error occurred.");
+              break;
+          }
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   return (
     <>
       <TremorStepTitle name={"INSPECTION"} />
       <div>
-        <div className="d-flex flex-wrap">
-          <div className="col-md-6 d-flex mb-3 mb-md-0">
+        <div className="row d-flex flex-wrap">
+          <div className="col-md d-flex mb-3 mb-md-0">
             <TremorTextInput
               id="buildingLocation"
               name="buildingLocation"
@@ -39,11 +75,11 @@ const InspectionForm = ({
               icon={<LocationOn />}
               required={false}
               width="inherit"
-              value={formData.inspection.buildingName || ""}
-              onChange={handleInputChange("buildingName")}
+              value={formData.inspection.buildingLocation || ""}
+              onChange={handleInputChange("buildingLocation")}
             />
           </div>
-          <div className="col-md-6 d-flex flex-column flex-md-row align-items-end justify-content-end">
+          <div className="col-md-6 d-flex flex-sm-row justify-content-end">
             <div className="mb-3 mb-md-0 me-md-4">
               <TremorTextInput
                 id="latitude"
@@ -57,7 +93,7 @@ const InspectionForm = ({
                 onChange={handleInputChange("lat")}
               />
             </div>
-            <div>
+            <div className="ms-2">
               <TremorTextInput
                 id="longitude"
                 name="longitude"
@@ -70,11 +106,21 @@ const InspectionForm = ({
                 onChange={handleInputChange("lon")}
               />
             </div>
+
+            <div className="d-flex my-auto">
+              <IconButton
+                color="primary"
+                onClick={handleGetCurrentLocation}
+                title="Get Current Location"
+              >
+                <MyLocationIcon />
+              </IconButton>
+            </div>
           </div>
         </div>
         <br />
         <div className="px-1">
-          <TremortMapContainer
+          <TremorMapContainer
             formData={formData.inspection}
             updateCoordinates={updateCoordinates}
           />
@@ -87,8 +133,8 @@ const InspectionForm = ({
             variant="filled"
             icon={<LocationCity />}
             required={false}
-            value={formData.inspection.name || ""}
-            onChange={handleInputChange("name")}
+            value={formData.inspection.buildingName || ""}
+            onChange={handleInputChange("buildingName")}
           />
         </div>
         <div className="row mt-4 px-1">
@@ -108,20 +154,20 @@ const InspectionForm = ({
                   row
                   aria-labelledby="AreasInspected-radio-buttons-group"
                   name="controlled-radio-buttons-group"
-                  value={formData.inspection.areaInspected || "Exterior Only"}
+                  value={formData.inspection.areaInspected || ""}
                   onChange={handleRadioChange}
                 >
                   <FormControlLabel
                     value="Exterior Only"
                     control={<Radio />}
                     label="Exterior Only"
-                    required={false}
+                    required={true}
                   />
                   <FormControlLabel
                     value="Exterior and Interior"
                     control={<Radio />}
                     label="Exterior and Interior"
-                    required={false}
+                    required={true}
                   />
                 </RadioGroup>
               </FormControl>

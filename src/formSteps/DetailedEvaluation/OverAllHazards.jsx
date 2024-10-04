@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TremorStepTitle from "../../components/TremorStepTitle";
 import {
   Checkbox,
@@ -56,6 +56,13 @@ const OverAllHazards = ({
 
   const [checkedStates, setCheckedStates] = useState({});
 
+  useEffect(() => {
+    const initialCheckedStates = {};
+    for (const row in formData.overAllHazards.comment) {
+      initialCheckedStates[row] = !!formData.overAllHazards.comment[row]; // true if there's data
+    }
+    setCheckedStates(initialCheckedStates);
+  }, [formData.overAllHazards.comment]);
   const handleCheckboxChange = (row) => (event) => {
     setCheckedStates((prev) => ({
       ...prev,
@@ -63,18 +70,22 @@ const OverAllHazards = ({
     }));
   };
   return (
-    <div>
+    <div className="m-2">
       <TremorStepTitle name={"EVALUATION"} />
       <TremorFormLabel
         label={
           "Investigate the building for the conditions below and click on the appropriate column."
         }
       />
-      <Typography className="mb-0 pb-0">OVERALL HAZARDS</Typography>
-      <hr></hr>
+      <Typography
+        sx={{ textDecoration: "underline", fontWeight: "bold" }}
+        className="mb-0 pb-0"
+      >
+        OVERALL HAZARDS
+      </Typography>
 
       <TableContainer component={Paper}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
@@ -125,8 +136,9 @@ const OverAllHazards = ({
                     />
                     {column === "Severe" &&
                       formData.overAllHazards[row] === "Severe" && (
-                        <div className="d-flex justify-content-center align-items-center">
+                        <div className="d-flex row justify-content-center align-items-center">
                           <FormControlLabel
+                            className="row"
                             control={
                               <Checkbox
                                 className="d-none"
@@ -147,6 +159,7 @@ const OverAllHazards = ({
                                 value={
                                   formData.overAllHazards.comment[row] || ""
                                 }
+                                multiline
                                 onChange={handleOthersSpecChange(row)}
                               />
                             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TremorStepTitle from "../../components/TremorStepTitle";
 import {
   Checkbox,
@@ -54,6 +54,15 @@ const StructuralHazards = ({
 
   const [checkedStates, setCheckedStates] = useState({});
 
+  // Effect to initialize checked states based on formData
+  useEffect(() => {
+    const initialCheckedStates = {};
+    for (const row in formData.structuralHazards.comment) {
+      initialCheckedStates[row] = !!formData.structuralHazards.comment[row]; // true if there's data
+    }
+    setCheckedStates(initialCheckedStates);
+  }, [formData.structuralHazards.comment]);
+
   const handleCheckboxChange = (row) => (event) => {
     setCheckedStates((prev) => ({
       ...prev,
@@ -61,18 +70,18 @@ const StructuralHazards = ({
     }));
   };
   return (
-    <div className="mb-4">
+    // <div className="mb-4">
+    <div className="m-2">
       <TremorStepTitle name={"EVALUATION"} />
 
-      <TremorFormLabel
-        label={
-          "Investigate the building for the conditions below and click on the appropriate column."
-        }
-      />
-      <Typography className="mb-0 pb-0">STRUCTURAL HAZARDS</Typography>
-      <hr></hr>
+      <Typography
+        sx={{ textDecoration: "underline", fontWeight: "bold" }}
+        className="mb-0 pb-0"
+      >
+        STRUCTURAL HAZARDS
+      </Typography>
       <TableContainer component={Paper}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
@@ -123,8 +132,9 @@ const StructuralHazards = ({
                     />
                     {column === "Severe" &&
                       formData.structuralHazards[row] === "Severe" && (
-                        <div className="d-flex justify-content-center align-items-center">
+                        <div className="d-flex row justify-content-center align-items-center">
                           <FormControlLabel
+                            className="row"
                             control={
                               <Checkbox
                                 className="d-none"
@@ -145,6 +155,7 @@ const StructuralHazards = ({
                                 value={
                                   formData.structuralHazards.comment[row] || ""
                                 }
+                                multiline
                                 onChange={handleOthersSpecChange(row)}
                               />
                             </div>

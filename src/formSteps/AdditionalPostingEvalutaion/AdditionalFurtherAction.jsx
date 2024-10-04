@@ -11,17 +11,16 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import TremorStepTitle from "../../components/TremorStepTitle";
-
-const UseAndEntryFurtherAction = ({
+export const AdditionalFurtherAction = ({
   formData,
   onChange,
   handleRadioChange,
 }) => {
   const handleInputChange = (field) => (e) => {
-    onChange("useAndEntryFurtherAction", field)(e);
+    onChange("additionalUseAndEntryFurtherAction", field)(e);
   };
   const [isOtherChecked, setIsOtherChecked] = useState(
-    !!formData.useAndEntryFurtherAction.recommendation
+    formData.additionalUseAndEntryFurtherAction.recommendation ? true : false
   );
 
   const handleCheckboxChange = (event) => {
@@ -33,26 +32,26 @@ const UseAndEntryFurtherAction = ({
       <TremorStepTitle name={"FURTHER ACTIONS"} />
       <FormGroup>
         {/* <FormControlLabel
-          control={
-            <Checkbox
-              checked={isOtherChecked}
-              onChange={handleCheckboxChange}
-              defaultChecked={false}
-            />
-          }
-          label="Barricades needed in the following areas: "
-        /> */}
+              control={
+                <Checkbox
+                  checked={isOtherChecked}
+                  onChange={handleCheckboxChange}
+                  defaultChecked={false}
+                />
+              }
+              label="Barricades needed in the following areas: "
+            /> */}
         <FormLabel id="type-of-construction-radio-buttons-group">
           Barricades needed in the following areas:
         </FormLabel>
         <TextField
           margin="normal"
-          name="useAndEntryFurtherActionRadioSpecify"
+          name="additionalUseAndEntryFurtherActionRadioSpecify"
           fullWidth
           label="Specify"
           variant="outlined"
           required={false}
-          value={formData.useAndEntryFurtherAction.barricade || ""}
+          value={formData.additionalUseAndEntryFurtherAction.barricade || ""}
           onChange={handleInputChange("barricade")}
         />
 
@@ -62,14 +61,16 @@ const UseAndEntryFurtherAction = ({
           </FormLabel>
           <RadioGroup
             aria-labelledby="type-of-construction-radio-buttons-group"
-            name="useAndEntryFurtherAction"
-            value={formData.useAndEntryFurtherAction.radioOptions || ""}
+            name="additionalUseAndEntryFurtherAction"
+            value={
+              formData.additionalUseAndEntryFurtherAction.radioOptions || ""
+            }
             onChange={handleRadioChange}
             sx={{ paddingLeft: "20px" }}
           >
             {radioOptions.map((option) => (
               <FormControlLabel
-                name="useAndEntryFurtherActionRadio"
+                name="additionalUseAndEntryFurtherActionRadio"
                 key={option}
                 value={option}
                 control={<Radio />}
@@ -78,21 +79,24 @@ const UseAndEntryFurtherAction = ({
               />
             ))}
             <FormControlLabel
-              name="useAndEntryFurtherActionRadio"
+              name="additionalUseAndEntryFurtherActionRadio"
               value="Others"
               control={<Radio />}
               label="Others"
               required={false}
             />
-            {formData.useAndEntryFurtherAction.radioOptions === "Others" && (
+            {formData.additionalUseAndEntryFurtherAction.radioOptions ===
+              "Others" && (
               <div className="col mt-2">
                 <TextField
-                  name="useAndEntryFurtherActionRadioSpecify"
+                  name="additionalUseAndEntryFurtherActionRadioSpecify"
                   fullWidth
                   label="Specify"
                   variant="outlined"
                   required
-                  value={formData.useAndEntryFurtherAction.specify || ""}
+                  value={
+                    formData.additionalUseAndEntryFurtherAction.specify || ""
+                  }
                   onChange={handleInputChange("specify")}
                 />
               </div>
@@ -101,8 +105,8 @@ const UseAndEntryFurtherAction = ({
 
           <RadioGroup
             aria-labelledby="type-of-construction-radio-buttons-group"
-            name="useAndEntryFurtherAction"
-            // value={formData.useAndEntryFurtherAction.radioOptions || ""}
+            name="additionalUseAndEntryFurtherAction"
+            // value={formData.additionalUseAndEntryFurtherAction.radioOptions || ""}
             // onChange={handleRadioChange}
           >
             <FormControlLabel
@@ -117,12 +121,15 @@ const UseAndEntryFurtherAction = ({
             {isOtherChecked && (
               <div className="col mt-2 ps-4">
                 <TextField
-                  name="useAndEntryFurtherActionRadioSpecify"
+                  name="additionalUseAndEntryFurtherActionRadioSpecify"
                   fullWidth
                   label="Specify"
                   variant="outlined"
                   required
-                  value={formData.useAndEntryFurtherAction.recommendation || ""}
+                  value={
+                    formData.additionalUseAndEntryFurtherAction
+                      .recommendation || ""
+                  }
                   onChange={handleInputChange("recommendation")}
                 />
               </div>
@@ -136,7 +143,9 @@ const UseAndEntryFurtherAction = ({
             multiline
             maxRows={10}
             style={{ marginTop: "20px" }}
-            value={formData.useAndEntryFurtherAction.mainComment || ""}
+            value={
+              formData.additionalUseAndEntryFurtherAction.mainComment || ""
+            }
             onChange={handleInputChange("mainComment")}
           />
         </FormControl>
@@ -144,5 +153,3 @@ const UseAndEntryFurtherAction = ({
     </div>
   );
 };
-
-export default UseAndEntryFurtherAction;

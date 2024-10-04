@@ -5,6 +5,7 @@ const TremorStepTitle = (props) => {
   const name = props.name;
   const background = props.background;
   const color = props.color;
+  const paddingTop = props.paddingTop;
   return (
     <div>
       <Typography
@@ -15,6 +16,7 @@ const TremorStepTitle = (props) => {
           fontWeight: "bold",
           background: background,
           color: color,
+          paddingTop: paddingTop ?? 0,
         }}
       >
         {name}

@@ -46,7 +46,7 @@ const Evaluation = ({ formData, onChange, handleRadioChange }) => {
   };
 
   return (
-    <div className="mb-4">
+    <div className="m-2">
       <TremorStepTitle name={"EVALUATION"} />
       <Typography>
         {" "}
@@ -54,7 +54,7 @@ const Evaluation = ({ formData, onChange, handleRadioChange }) => {
         appropriate column.{" "}
       </Typography>
       <TableContainer component={Paper}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>

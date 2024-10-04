@@ -12,7 +12,7 @@ const BuildingDescription = ({ formData, onChange }) => {
     <>
       <TremorStepTitle name={"BUILDING DESCRIPTION"} />
       <div className="row d-flex">
-        <div className="col-md-12 col-lg-6">
+        <div className="col-md-12 ">
           <TremorTextInput
             id={"buildingContact"}
             label={"Building Contact / Phone"}

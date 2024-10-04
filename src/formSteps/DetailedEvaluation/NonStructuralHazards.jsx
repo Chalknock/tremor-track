@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TremorStepTitle from "../../components/TremorStepTitle";
 import {
   Checkbox,
@@ -51,7 +51,13 @@ const NonStructuralHazards = ({
   );
 
   const [checkedStates, setCheckedStates] = useState({});
-
+  useEffect(() => {
+    const initialCheckedStates = {};
+    for (const row in formData.nonStructuralHazards.comment) {
+      initialCheckedStates[row] = !!formData.nonStructuralHazards.comment[row]; // true if there's data
+    }
+    setCheckedStates(initialCheckedStates);
+  }, [formData.nonStructuralHazards.comment]);
   const handleCheckboxChange = (row) => (event) => {
     setCheckedStates((prev) => ({
       ...prev,
@@ -59,17 +65,14 @@ const NonStructuralHazards = ({
     }));
   };
   return (
-    <div className="mb-4">
+    <div className="m-2">
       <TremorStepTitle name={"EVALUATION"} />
 
-      <TremorFormLabel
-        label={
-          "Investigate the building for the conditions below and click on the appropriate column."
-        }
-      />
-      <Typography>NONSTRUCTURAL HAZARDS</Typography>
+      <Typography sx={{ textDecoration: "underline", fontWeight: "bold" }}>
+        NONSTRUCTURAL HAZARDS
+      </Typography>
       <TableContainer component={Paper}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
@@ -122,8 +125,9 @@ const NonStructuralHazards = ({
                     />
                     {column === "Severe" &&
                       formData.nonStructuralHazards[row] === "Severe" && (
-                        <div className="d-flex justify-content-center align-items-center">
+                        <div className="d-flex row justify-content-center align-items-center">
                           <FormControlLabel
+                            className="row"
                             control={
                               <Checkbox
                                 className="d-none"
@@ -145,6 +149,7 @@ const NonStructuralHazards = ({
                                   formData.nonStructuralHazards.comment[row] ||
                                   ""
                                 }
+                                multiline
                                 onChange={handleOthersSpecChange(row)}
                               />
                             </div>

@@ -55,7 +55,28 @@ export const handleRadioChangePosting = (setFormData) => (e) => {
     },
   }));
 };
+export const handleRadioChangeAdditionalPosting = (setFormData) => (e) => {
+  const { value } = e.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    additionalPosting: {
+      ...prevData.additionalPosting,
+      radioOptions: value || "",
+    },
+  }));
+};
 
+export const handleMultipleRadioChangeAdditionalUseAndEntryFurtherAction =
+  (setFormData) => (event) => {
+    const { value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      additionalUseAndEntryFurtherAction: {
+        ...prevData.additionalUseAndEntryFurtherAction,
+        radioOptions: value || "",
+      },
+    }));
+  };
 export const handleMultipleRadioChangeTypeofConstruction =
   (setFormData) => (event) => {
     const { value } = event.target;

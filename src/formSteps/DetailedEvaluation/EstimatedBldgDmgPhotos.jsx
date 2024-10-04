@@ -13,48 +13,84 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
-  InputAdornment,
 } from "@mui/material";
 import React, { useState } from "react";
 
-const EstimatedBldgDmgPhotos = () => {
-  const [image, setImage] = useState([]);
-  const [percentage, setPercentage] = useState("");
+const EstimatedBldgDmgPhotos = ({ formData, onChange }) => {
+  const [images, setImages] = useState(
+    formData.estimatedBldgDmgPhotos?.images || []
+  );
+  const [percentage, setPercentage] = useState(
+    formData.estimatedBldgDmgPhotos?.percentage || ""
+  );
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
+  // Handle image upload
   const handleImageChange = (e) => {
     const files = e.target.files;
-    console.log(files);
 
     if (files.length > 0) {
+      const newImages = [];
       Array.from(files).forEach((file) => {
         const reader = new FileReader();
         reader.onloadend = () => {
-          setImage((prevImages) => [...prevImages, reader.result]);
+          newImages.push(reader.result);
+          const updatedImages = [...images, ...newImages];
+          setImages(updatedImages);
+
+          // Pass the updated images to the parent component
+          onChange(
+            "estimatedBldgDmgPhotos",
+            "images"
+          )({
+            target: { value: updatedImages },
+          });
         };
         reader.readAsDataURL(file);
       });
     }
   };
 
+  // Handle percentage change
   const handleChange = (event) => {
-    setPercentage(event.target.value);
+    const newPercentage = event.target.value;
+    setPercentage(newPercentage);
+
+    // Pass the updated percentage to the parent component
+    onChange(
+      "estimatedBldgDmgPhotos",
+      "percentage"
+    )({
+      target: { value: newPercentage },
+    });
   };
 
+  // Handle modal open
   const handleOpenModal = (img) => {
     setSelectedImage(img);
     setOpenModal(true);
   };
 
+  // Handle modal close
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
+  // Remove image
   const handleRemoveImage = (index) => {
-    setImage((prevImages) => prevImages.filter((_, i) => i !== index));
+    const updatedImages = images.filter((_, i) => i !== index);
+    setImages(updatedImages);
+
+    // Pass the updated images list to the parent component
+    onChange(
+      "estimatedBldgDmgPhotos",
+      "images"
+    )({
+      target: { value: updatedImages },
+    });
   };
+
   const dropDownOptions = [
     "None",
     "0-1%",
@@ -67,16 +103,14 @@ const EstimatedBldgDmgPhotos = () => {
 
   return (
     <div>
-      <Typography className="text-start">
+      <Typography variant="h6" className="text-start">
         Estimated Building Damage (excluding contents)
       </Typography>
       <FormControl variant="filled" sx={{ m: 1, minWidth: "100%" }}>
-        <InputLabel id="demo-simple-select-filled-label">
-          Choose . . .
-        </InputLabel>
+        <InputLabel id="damage-percentage-label">Choose . . .</InputLabel>
         <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
+          labelId="damage-percentage-label"
+          id="damage-percentage-select"
           value={percentage}
           onChange={handleChange}
         >
@@ -89,19 +123,13 @@ const EstimatedBldgDmgPhotos = () => {
       </FormControl>
       <div>
         <Typography className="text-start">Sketch or Photos</Typography>
-        {/* <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleImageChange}
-        /> */}
         <label
           htmlFor="file-input"
           style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
         >
           <PhotoCamera sx={{ fontSize: "40px", marginRight: "10px" }} />
-          {/* <span>Upload Image</span> */}
-        </label>{" "}
+          <span>Upload Image</span>
+        </label>
         <input
           id="file-input"
           type="file"
@@ -111,7 +139,7 @@ const EstimatedBldgDmgPhotos = () => {
           style={{ display: "none" }} // Hide the default input
         />
         <div style={{ display: "flex", flexWrap: "wrap", marginTop: "20px" }}>
-          {image.map((img, index) => (
+          {images.map((img, index) => (
             <Card key={index} sx={{ width: "300px", margin: "10px" }}>
               <CardMedia
                 component="img"

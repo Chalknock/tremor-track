@@ -1,36 +1,33 @@
 import React, { useMemo, useState } from "react";
-
 import PropTypes from "prop-types";
+import { Link, Outlet } from "react-router-dom"; // Import Link and Outlet
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Multiform from "../components/Multiform";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import { AssuredWorkload, Checklist, Summarize } from "@mui/icons-material";
-import { TestAccount } from "../components/test/TestAccount";
-import { TestReport } from "../components/test/TestReport";
-import { TestInspection } from "../components/test/TestInspection";
-import { useMultiStep } from "../utilities/useMultiStep";
+import {
+  AssuredWorkload,
+  Checklist,
+  Summarize,
+  AccountBox,
+} from "@mui/icons-material";
+
 const drawerWidth = 240;
 
 const TremorDrawer = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
-  false;
+
   const handleDrawerClose = () => {
     setIsClosing(true);
     setMobileOpen(false);
@@ -45,29 +42,30 @@ const TremorDrawer = () => {
       setMobileOpen(!mobileOpen);
     }
   };
+
   const drawerItems = useMemo(
-    () => ["Evaluate", "Reports", "Inspection", "Account"],
-    []
-  );
-  const drawerItemsIcons = useMemo(
     () => [
-      <Checklist />,
-      <Summarize />,
-      <AssuredWorkload />,
-      <AccountBoxIcon />,
+      { text: "Evaluate", icon: <Checklist />, path: "/evaluate" },
+      { text: "Reports", icon: <Summarize />, path: "/reports" },
+      { text: "Inspection", icon: <AssuredWorkload />, path: "/inspection" },
+      { text: "Account", icon: <AccountBox />, path: "/account" },
     ],
     []
   );
-  const [selectedItem, setSelectedItem] = useState(drawerItems[0]);
+
   const drawer = (
     <div>
       {!mobileOpen && <Toolbar />}
       <Divider />
       <List>
-        {drawerItems.map((text, index) => (
+        {drawerItems.map(({ text, icon, path }) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => setSelectedItem(text)}>
-              <ListItemIcon>{drawerItemsIcons[index]}</ListItemIcon>
+            <ListItemButton
+              component={Link}
+              to={path}
+              onClick={handleDrawerClose}
+            >
+              <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
@@ -75,6 +73,7 @@ const TremorDrawer = () => {
       </List>
     </div>
   );
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -105,7 +104,7 @@ const TremorDrawer = () => {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -142,7 +141,6 @@ const TremorDrawer = () => {
           open
         >
           {drawer}
-          {/* drawer Items */}
         </Drawer>
       </Box>
       <Box
@@ -155,16 +153,14 @@ const TremorDrawer = () => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {/* <Toolbar /> */}
-        {selectedItem === "Evaluate" && (
-          <Multiform currentStepIndex={() => setStepIndex} />
-        )}
-        {selectedItem === "Reports" && <TestReport />}
-        {selectedItem === "Inspection" && <TestInspection />}
-        {selectedItem === "Account" && <TestAccount />}
+        <Outlet /> {/* Render the matched child route */}
       </Box>
     </Box>
   );
+};
+
+TremorDrawer.propTypes = {
+  // Define props here if necessary
 };
 
 export default TremorDrawer;

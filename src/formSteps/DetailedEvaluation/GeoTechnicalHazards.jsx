@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TremorStepTitle from "../../components/TremorStepTitle";
 import {
   Checkbox,
@@ -54,6 +54,14 @@ const GeoTechnicalHazards = ({
 
   const [checkedStates, setCheckedStates] = useState({});
 
+  useEffect(() => {
+    const initialCheckedStates = {};
+    for (const row in formData.geoTechnicalHazards.comment) {
+      initialCheckedStates[row] = !!formData.geoTechnicalHazards.comment[row]; // true if there's data
+    }
+    setCheckedStates(initialCheckedStates);
+  }, [formData.geoTechnicalHazards.comment]);
+
   const handleCheckboxChange = (row) => (event) => {
     setCheckedStates((prev) => ({
       ...prev,
@@ -61,17 +69,14 @@ const GeoTechnicalHazards = ({
     }));
   };
   return (
-    <div>
+    <div className="m-2">
       <TremorStepTitle name={"EVALUATION"} />
 
-      <TremorFormLabel
-        label={
-          "Investigate the building for the conditions below and click on the appropriate column."
-        }
-      />
-      <Typography>GEOTECHNICAL HAZARDS</Typography>
+      <Typography sx={{ textDecoration: "underline", fontWeight: "bold" }}>
+        GEOTECHNICAL HAZARDS
+      </Typography>
       <TableContainer component={Paper}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
@@ -122,8 +127,9 @@ const GeoTechnicalHazards = ({
                     />
                     {column === "Severe" &&
                       formData.geoTechnicalHazards[row] === "Severe" && (
-                        <div className="d-flex justify-content-center align-items-center">
+                        <div className="d-flex row justify-content-center align-items-center">
                           <FormControlLabel
+                            className="row"
                             control={
                               <Checkbox
                                 className="d-none"

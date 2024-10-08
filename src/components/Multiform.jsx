@@ -273,7 +273,7 @@ const Multiform = () => {
   const handleSubmit = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/inspections",
+        "http://104.198.253.120:5000/api/inspections",
         formData
       );
       console.log("Response from backend:dasdas", response.data);
@@ -285,7 +285,7 @@ const Multiform = () => {
   const handleInsertData = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/inspections",
+        "http://104.198.253.120:5000/api/inspections",
         formData
       );
       console.log("Response from backend:", response.data);

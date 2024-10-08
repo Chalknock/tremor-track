@@ -14,7 +14,7 @@ export const TremorInspectorList = ({ formData, handleInspectorClick }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/inspectorAll"
+          "http://104.198.253.120:5000/api/inspectorAll"
         );
         setData(response.data);
       } catch (error) {

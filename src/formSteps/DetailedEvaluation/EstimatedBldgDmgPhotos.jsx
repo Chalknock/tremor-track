@@ -26,20 +26,30 @@ const EstimatedBldgDmgPhotos = ({ formData, onChange }) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
-  // Handle image upload
   const handleImageChange = (e) => {
     const files = e.target.files;
+    const MAX_FILE_SIZE = 10 * 1024 * 1024;
+    const acceptedTypes = ["image/jpeg", "image/png"];
 
     if (files.length > 0) {
       const newImages = [];
       Array.from(files).forEach((file) => {
+        if (file.size > MAX_FILE_SIZE) {
+          alert("File is too large. Max size is 10MB.");
+          return;
+        }
+
+        if (!acceptedTypes.includes(file.type)) {
+          alert("Unsupported file type. Only JPEG and PNG are allowed.");
+          return;
+        }
+
         const reader = new FileReader();
         reader.onloadend = () => {
           newImages.push(reader.result);
           const updatedImages = [...images, ...newImages];
           setImages(updatedImages);
 
-          // Pass the updated images to the parent component
           onChange(
             "estimatedBldgDmgPhotos",
             "images"
@@ -52,12 +62,9 @@ const EstimatedBldgDmgPhotos = ({ formData, onChange }) => {
     }
   };
 
-  // Handle percentage change
   const handleChange = (event) => {
     const newPercentage = event.target.value;
     setPercentage(newPercentage);
-
-    // Pass the updated percentage to the parent component
     onChange(
       "estimatedBldgDmgPhotos",
       "percentage"
@@ -66,23 +73,18 @@ const EstimatedBldgDmgPhotos = ({ formData, onChange }) => {
     });
   };
 
-  // Handle modal open
   const handleOpenModal = (img) => {
     setSelectedImage(img);
     setOpenModal(true);
   };
 
-  // Handle modal close
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
-  // Remove image
   const handleRemoveImage = (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages);
-
-    // Pass the updated images list to the parent component
     onChange(
       "estimatedBldgDmgPhotos",
       "images"
@@ -175,7 +177,7 @@ const EstimatedBldgDmgPhotos = ({ formData, onChange }) => {
           <img
             src={selectedImage}
             alt="Selected"
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "100%", height: "auto", maxHeight: "80vh" }}
           />
         </DialogContent>
         <DialogActions>

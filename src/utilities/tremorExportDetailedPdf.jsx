@@ -2,8 +2,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable"; // If you're also using autoTable
 import React from "react";
 
-export const tremorExportPdf = ({ formData }) => {
-  console.log("downloaded");
+export const tremorExportDetailedPdf = ({ formData }) => {
   console.log(formData);
 
   const doc = new jsPDF({
@@ -29,7 +28,7 @@ export const tremorExportPdf = ({ formData }) => {
 
   // Prepare the text to be displayed
   const textLines = [
-    `ATC-20 RAPID EVALUATION SAFETY ASSESSMENT SUMMARY`,
+    `ATC-20 DETAILED EVALUATION SAFETY ASSESSMENT SUMMARY`,
     `${formData.inspection.buildingName}`,
   ];
 
@@ -50,9 +49,9 @@ export const tremorExportPdf = ({ formData }) => {
 
   // Aligning latitude on both ends of the line
   const leftText = `${formData.inspection.buildingName}`;
-  const rightText = `${
-    formData.posting.radioOptions != "INSPECTED"
-      ? formData.posting.radioOptions
+  const rightText = `${formData.posting.radioOptions}: ${
+    formData.additionalPosting.radioOptions != "INSPECTED"
+      ? formData.additionalPosting.radioOptions
       : "SAFE"
   }`; // This could be any label you want to add to the right
 
@@ -171,58 +170,192 @@ export const tremorExportPdf = ({ formData }) => {
   ];
 
   // Calculate Y position for the evaluation table
-  const evalOffset = 3; // Adjust as needed
+  const evalOffset = 8; // Adjust as needed
   const evalStartY = endY + evalOffset; // Start Y position for evaluation
-
+  doc.setFont("helvetica", "bold"); // Reset font to normal
+  doc.setFontSize(10);
+  doc.text(`Evaluation`, leftMargin, evalStartY - 3);
+  doc.setFont("helvetica", "normal"); // Reset font to normal
   // Set font size for evaluation
   doc.setFontSize(8);
-  doc.line(leftMargin, evalStartY + 5, pageWidth - rightMargin, evalStartY + 5); // Line above the table
+  // doc.line(leftMargin, evalStartY + 5, pageWidth - rightMargin, evalStartY + 5); // Line above the table
 
+  const columns = ["Hazard", "Damage", "Comment"];
+  const rows = [
+    [{ content: "   Overall Hazards", colSpan: 3 }], // Hazards in the third row
+    [
+      "       Collapse or partial collapse",
+      `${formData.overAllHazards["Collapse or partial collapse"]}`,
+      `${formData.overAllHazards.comment["Collapse or partial collapse"]}`,
+    ],
+    [
+      "       Building  or story leaning",
+      `${formData.overAllHazards["Building  or story leaning"]}`,
+      `${formData.overAllHazards.comment["Building  or story leaning"]}`,
+    ],
+    [
+      `       Others: ${formData.overAllHazards["specify"]}`,
+      `${formData.overAllHazards["Others"]}`,
+      `${formData.overAllHazards.comment["Others"]}`,
+    ],
+
+    [{ content: "   Structural Hazards", colSpan: 3 }],
+    [
+      "       Precast connections",
+      `${formData.structuralHazards["Precast connections"]}`,
+      `${formData.structuralHazards.comment["Precast connections"]}`,
+    ],
+    [
+      "       Roofs, floors (vertical loads)",
+      `${formData.structuralHazards["Roofs, floors (vertical loads)"]}`,
+      `${formData.structuralHazards.comment["Roofs, floors (vertical loads)"]}`,
+    ],
+    [
+      "       Columns, pilasters, corbels",
+      `${formData.structuralHazards["Columns, pilasters, corbels"]}`,
+      `${formData.structuralHazards.comment["Columns, pilasters, corbels"]}`,
+    ],
+    [
+      "       Diaphragms, horizontal bracing",
+      `${formData.structuralHazards["Diaphragms, horizontal bracing"]}`,
+      `${formData.structuralHazards.comment["Diaphragms, horizontal bracing"]}`,
+    ],
+    [
+      "       Walls, vertical bracing",
+      `${formData.structuralHazards["Walls, vertical bracing"]}`,
+      `${formData.structuralHazards.comment["Walls, vertical bracing"]}`,
+    ],
+    [
+      `       Others: ${formData.structuralHazards["specify"]}`,
+      `${formData.structuralHazards["Others"]}`,
+      `${formData.structuralHazards.comment["Others"]}`,
+    ],
+    [{ content: "   Nonstructural Hazards", colSpan: 3 }], // Hazards in the third row
+    [
+      "       Parapets, ornamentation",
+      `${formData.nonStructuralHazards["Parapets, ornamentation"]}`,
+      `${formData.nonStructuralHazards.comment["Parapets, ornamentation"]}`,
+    ],
+    [
+      "       Ceilings, light fixtures",
+      `${formData.nonStructuralHazards["Ceilings, light fixtures"]}`,
+      `${formData.nonStructuralHazards.comment["Ceilings, light fixtures"]}`,
+    ],
+    [
+      "       Cladding, glazing",
+      `${formData.nonStructuralHazards["Cladding, glazing"]}`,
+      `${formData.nonStructuralHazards.comment["Cladding, glazing"]}`,
+    ],
+    [
+      "       Interior walls, partitions",
+      `${formData.nonStructuralHazards["Interior walls, partitions"]}`,
+      `${formData.nonStructuralHazards.comment["Interior walls, partitions"]}`,
+    ],
+    [
+      "       Stairs, exits",
+      `${formData.nonStructuralHazards["Stairs, exits"]}`,
+      `${formData.nonStructuralHazards.comment["Stairs, exits"]}`,
+    ],
+    [
+      "       Elevators",
+      `${formData.nonStructuralHazards["Elevators"]}`,
+      `${formData.nonStructuralHazards.comment["Elevators"]}`,
+    ],
+    [
+      "       Electric, gas",
+      `${formData.nonStructuralHazards["Electric, gas"]}`,
+      `${formData.nonStructuralHazards.comment["Electric, gas"]}`,
+    ],
+    [
+      `       Others: ${formData.nonStructuralHazards["specify"]}`,
+      `${formData.nonStructuralHazards["Others"]}`,
+      `${formData.nonStructuralHazards.comment["Others"]}`,
+    ],
+    [{ content: "   Geotechnical Hazards", colSpan: 3 }], // Hazards in the third row
+    [
+      "       Slope failure, debris",
+      `${formData.geoTechnicalHazards["Slope failure, debris"]}`,
+      `${formData.geoTechnicalHazards.comment["Slope failure, debris"]}`,
+    ],
+    [
+      "       Ground movement, fissures",
+      `${formData.geoTechnicalHazards["Ground movement, fissures"]}`,
+      `${formData.geoTechnicalHazards.comment["Ground movement, fissures"]}`,
+    ],
+    [
+      `       Others: ${formData.geoTechnicalHazards["specify"]}`,
+      `${formData.geoTechnicalHazards["Others"]}`,
+      `${formData.geoTechnicalHazards.comment["Others"]}`,
+    ],
+  ];
   // Add evaluation table
   doc.autoTable({
-    head: evaluationData.slice(0, 1), // Table header
-    body: evaluationData.slice(1), // Table rows
+    head: [columns], // Table header
+    body: rows, // Table rows
     startY: evalStartY, // Start position for the table
     styles: {
-      cellPadding: 1,
+      cellPadding: 0,
       fontSize: 8,
       fillColor: null,
-      lineWidth: 0, // Remove borders
-      drawCell: false,
+
+      lineWidth: 0.3,
+      lineColor: [0, 0, 0],
+      // lineWidth: 0, // Remove borders
+      // drawCell: false,
       textColor: [0, 0, 0],
     },
     headStyles: {
       fillColor: null, // Remove background color from header
       textColor: [0, 0, 0], // Black text for header
-      lineWidth: 0, // Remove borders from header
-      drawCell: false,
+      // lineWidth: 0, // Remove borders from header
+      // drawCell: false,
       fontSize: 10,
+      halign: "center",
+      overflow: "linebreak",
     },
     theme: "plain",
     margin: { left: leftMargin, right: rightMargin },
+    // columnStyles: {
+    //   0: { cellWidth: 100 }, // Width of the first column (Evaluation Category)
+    //   1: { cellWidth: 70 }, // Width of the second column (Assessment)
+    // },
     columnStyles: {
-      0: { cellWidth: 100 }, // Width of the first column (Evaluation Category)
-      1: { cellWidth: 70 }, // Width of the second column (Assessment)
+      0: { cellWidth: 60 },
+      1: { halign: "center", cellWidth: 40 }, // Center the text in the second column (damage column)
+      2: { cellPadding: { left: 4, right: 2 }, cellWidth: 70 },
     },
   });
 
   const tableEndY = evalStartY + evaluationData.length * 5; // Approximate height based on number of rows
-  doc.line(leftMargin, tableEndY + 3, pageWidth - rightMargin, tableEndY + 3); // Line below the table
+  // doc.line(leftMargin, tableEndY + 64, pageWidth - rightMargin, tableEndY + 64); // Line below the table
 
   const textBelowTable = "Thank you for your assessment!";
-  const textBelowY = tableEndY + 10; // Positioning text 10 units below the bottom border
+  const textBelowY = tableEndY + 53; // Positioning text 10 units below the bottom border
   // doc.setFontSize(10); // Set font size for the below text
   doc.text(
     `Estimated Building Damage: ${formData.estimatedBldgDmg.radioOptions}`,
     leftMargin,
     textBelowY
   );
-  doc.text(`Comments: `, leftMargin, textBelowY + 8);
-  doc.text(
+  const maxWidth = doc.internal.pageSize.getWidth() - 50; // Subtract margins
+
+  // Use splitTextToSize to wrap the text
+  const wrappedTextCommentUseEntry = doc.splitTextToSize(
     `${formData.estimatedBldgDmg.comment}`,
-    leftMargin + 5,
-    textBelowY + 12
+    maxWidth
   );
+
+  // Add the wrapped text to the document
+  const yStart = 20; // Starting Y position
+  doc.text(`Comments: `, leftMargin, textBelowY + 8);
+  wrappedTextCommentUseEntry.forEach((line, index) => {
+    doc.text(line, 25, textBelowY + 12 + index * 5); // Adjust Y position for each line
+  });
+  // doc.text(
+  //   `${formData.estimatedBldgDmg.comment}`,
+  //   leftMargin + 5,
+  //   textBelowY + 12
+  // );
 
   doc.text(
     `Use and Entry Restrictions written on placard: `,
@@ -231,7 +364,7 @@ export const tremorExportPdf = ({ formData }) => {
   );
   doc.text(`${formData.useAndEntry.specify}`, leftMargin + 5, textBelowY + 54);
 
-  const useEntryOffset = 80;
+  const useEntryOffset = 75;
   doc.text(`Further Actions: `, leftMargin, textBelowY + useEntryOffset);
   doc.text(
     `Barricades needed in the following areas: ${formData.useAndEntryFurtherAction.barricade}`,
@@ -252,13 +385,23 @@ export const tremorExportPdf = ({ formData }) => {
     leftMargin + 5,
     textBelowY + useEntryOffset + 12
   );
-  doc.text(
-    `Comment: ${formData.useAndEntryFurtherAction.mainComment}`,
-    leftMargin + 5,
-    textBelowY + useEntryOffset + 16
+  const wrappedTextCommentUseEntryFurther = doc.splitTextToSize(
+    `${formData.useAndEntryFurtherAction.mainComment}`,
+    maxWidth - 15
   );
 
-  const inspectedByOffset = 120;
+  // Add the wrapped text to the document
+  doc.text(`Comments: `, leftMargin + 5, useEntryOffset + 177);
+  wrappedTextCommentUseEntryFurther.forEach((line, index) => {
+    doc.text(line, 40, useEntryOffset + 177 + index * 5); // Adjust Y position for each line
+  });
+  // doc.text(
+  //   `Comment: ${formData.useAndEntryFurtherAction.mainComment}`,
+  //   leftMargin + 5,
+  //   textBelowY + useEntryOffset + 16
+  // );
+
+  const inspectedByOffset = 110;
   doc.text(`Inspected By: `, leftMargin, textBelowY + inspectedByOffset);
   doc.text(
     `${formData.inspector.inspectorID}`,
@@ -277,6 +420,6 @@ export const tremorExportPdf = ({ formData }) => {
   );
   // Save the PDF
   doc.save(
-    `${formData.inspection.buildingName}_${formData.inspection.monthName}-${formData.inspection.day}-${formData.inspection.year}_rapid.pdf`
+    `${formData.inspection.buildingName}_${formData.inspection.monthName}-${formData.inspection.day}-${formData.inspection.year}_detailed.pdf`
   );
 };

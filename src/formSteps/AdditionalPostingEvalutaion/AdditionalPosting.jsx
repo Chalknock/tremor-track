@@ -50,7 +50,7 @@ export const AdditionalPosting = ({
             value="INSPECTED"
             control={<Radio />}
             label="INSPECTED"
-            required={false}
+            required={true}
             style={{
               background: "green",
               marginBottom: "20px",
@@ -71,7 +71,7 @@ export const AdditionalPosting = ({
             value="RESTRICTED USE"
             control={<Radio />}
             label="RESTRICTED USE"
-            required={false}
+            required={true}
             style={{
               background: "yellow",
               marginBottom: "20px",
@@ -92,7 +92,7 @@ export const AdditionalPosting = ({
             value="UNSAFE"
             control={<Radio />}
             label="UNSAFE"
-            required={false}
+            required={true}
             style={{
               background: "red",
               marginBottom: "20px",

@@ -1,3 +1,13 @@
+export const handleInspectorClick = (setFormData) => (field) => (e) => {
+  setFormData((prevData) => ({
+    ...prevData,
+    inspector: {
+      ...prevData.inspector,
+      [field]: e || "",
+    },
+  }));
+};
+
 export const handleChange = (setFormData) => (section, field) => (e) => {
   const { value } = e.target;
   setFormData((prevData) => ({

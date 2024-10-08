@@ -11,7 +11,12 @@ import TremorDrawer from "./base/TremorDrawer";
 
 import { TestAccount } from "./components/test/TestAccount";
 import { TestReport } from "./components/test/TestReport";
-import { TestInspection } from "./components/test/TestInspection";
+import { InspectionProvider } from "./components/provider/InspectionProvider";
+import MultiformRe from "./components/MultiformRe";
+import TremorAddInspector from "./components/TremorAddInspector";
+import TremorInspectorList from "./components/TremorInspectorList";
+import NotFound from "./components/NotFound";
+import TremorInspectionList from "./components/test/TremorInspectionList";
 
 function App() {
   return (
@@ -20,17 +25,24 @@ function App() {
       {/* <UserProfile /> */}
       {/* <Sidebar /> */}
       {/* <TremorDrawer /> */}
-      <Router>
-        <Routes>
-          <Route path="/" element={<TremorDrawer />}>
-            <Route path="/" element={<Multiform />} />
-            <Route path="evaluate" element={<Multiform />} />
-            <Route path="reports" element={<TestReport />} />
-            <Route path="inspection" element={<TestInspection />} />
-            <Route path="account" element={<TestAccount />} />
-          </Route>
-        </Routes>
-      </Router>
+      <InspectionProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<TremorDrawer />}>
+              {/* <Route path="/" element={<TremorInspectorList />} /> */}
+              <Route path="/" element={<Multiform />} />
+              <Route path="evaluate" element={<Multiform />} />
+              <Route path="reevaluate" element={<MultiformRe />} />
+              <Route path="reports" element={<TestReport />} />
+              <Route path="inspector" element={<TremorAddInspector />} />
+              <Route path="inspection" element={<TremorInspectionList />} />
+              {/* <Route path="account" element={<TestAccount />} /> */}
+
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </Router>
+      </InspectionProvider>
     </>
   );
 }

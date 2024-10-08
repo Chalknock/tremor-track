@@ -1,0 +1,94 @@
+.test-inspect-container {
+    max-width: 800px; 
+    margin: auto; 
+    padding: 20px; 
+    background-color: #f9f9f9; 
+    border-radius: 8px; 
+    height: 95vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    height: 100vh;
+  }
+  
+  h1 {
+    text-align: center; 
+    color: #333; 
+  }
+  
+  .scrollable-list {
+    max-height: 80vh; 
+    overflow-y: auto; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    padding: 10px; 
+    margin-top: 0px; 
+  }
+  
+  .inspection-list {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+  }
+  
+  .inspection-item {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px; 
+    border-bottom: 1px solid #eaeaea; 
+  }
+  
+  .inspection-item:last-child {
+    border-bottom: none; 
+  }
+  
+  .building-name {
+    font-weight: bold; 
+    color: #007bff; 
+  }
+  
+  .button-group {
+    display: flex; 
+  }
+  
+  .view-button,
+  .delete-button {
+    padding: 8px 12px; 
+    margin-left: 10px; 
+    border: none; 
+    border-radius: 4px; 
+    color: #fff; 
+    cursor: pointer; 
+    min-width: 180px;
+  }
+  
+  .view-button {
+    background-color: #007bff; 
+  }
+  
+  .delete-button {
+    background-color: #dc3545; 
+  }
+  
+  .view-button:hover {
+    background-color: #0056b3; 
+  }
+  
+  .delete-button:hover {
+    background-color: #c82333; 
+  }
+  
+
+  .search-input {
+    width: 100%; 
+    padding: 10px; 
+    margin: 20px 0; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 16px; 
+  }
+  
+  .search-input:focus {
+    outline: none; 
+    border-color: #007bff; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+  }

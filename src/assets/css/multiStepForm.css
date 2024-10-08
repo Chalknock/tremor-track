@@ -6,9 +6,28 @@
   margin: 1rem auto;
   border-radius: 0.5rem;
   max-width: 100%;
-  height: 90vh;
+  height: 87vh;
   display: flex;
   flex-direction: column;
+}
+
+.scrollable-list {
+  flex-grow: 1; /* Ensures the scrollable list takes up available space */
+  overflow-y: auto; /* Enables vertical scrolling */
+  border: 1px solid #ddd; /* Optional: border to separate scrollable area */
+}
+
+.scrollable-list ul {
+  padding: 0;
+  list-style-type: none; /* Remove bullet points */
+}
+
+.scrollable-list li {
+  border-bottom: 1px solid #ddd; /* Optional: add borders between items */
+}
+
+.scrollable-list li:last-child {
+  border-bottom: none; /* Remove border for the last item */
 }
 
 .multi-step-form {

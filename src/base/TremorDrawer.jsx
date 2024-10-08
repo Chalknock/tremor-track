@@ -46,9 +46,14 @@ const TremorDrawer = () => {
   const drawerItems = useMemo(
     () => [
       { text: "Evaluate", icon: <Checklist />, path: "/evaluate" },
-      { text: "Reports", icon: <Summarize />, path: "/reports" },
-      { text: "Inspection", icon: <AssuredWorkload />, path: "/inspection" },
-      { text: "Account", icon: <AccountBox />, path: "/account" },
+      // { text: "Reports", icon: <Summarize />, path: "/reports" },
+      {
+        text: "Inspection List",
+        icon: <AssuredWorkload />,
+        path: "/inspection",
+      },
+      // { text: "Account", icon: <AccountBox />, path: "/account" },
+      { text: "Create Profile", icon: <AccountBox />, path: "/inspector" },
     ],
     []
   );

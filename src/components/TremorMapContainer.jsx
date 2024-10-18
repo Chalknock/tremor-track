@@ -46,8 +46,8 @@ const TremorMapContainer = ({ formData, updateCoordinates }) => {
   let initialPosition = [formData.lat, formData.lon];
 
   const [location, setLocation] = useState({ lat: null, lon: null });
-  const [markerPosition, setMarkerPosition] = useState([0, 0]);
-  const [mapCenter, setMapCenter] = useState([0, 0]);
+  const [markerPosition, setMarkerPosition] = useState([14.599512, 120.984222]);
+  const [mapCenter, setMapCenter] = useState([14.599512, 120.984222]);
   useEffect(() => {
     if (isNaN(formData.lat) || isNaN(formData.lon)) {
       if (location.lat && location.lon) {

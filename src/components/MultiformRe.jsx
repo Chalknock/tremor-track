@@ -750,7 +750,7 @@ const MultiformRe = () => {
     } catch (error) {
       console.error("Error restoring data:", error);
       if (error.response) {
-        // Handle specific HTTP error statuses
+        // Handle specific http error statuses
         console.error(
           `Error: ${error.response.status} - ${error.response.data}`
         );

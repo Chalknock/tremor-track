@@ -44,9 +44,14 @@ export const TremorInspectorList = ({ formData, handleInspectorClick }) => {
   };
 
   // Filter the data based on the search term
-  const filteredData = data.filter((inspector) =>
-    inspector.firstname.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredData = data.filter((inspector) =>
+  //   inspector.firstname.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+  const filteredData = Array.isArray(data)
+    ? data.filter((inspector) =>
+        inspector.firstname.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="test-inspector-container">

@@ -49,7 +49,7 @@ const InspectorForm = () => {
       await Promise.all(
         inspectors.map(async (inspector) => {
           await axios.post(
-            "http://104.198.253.120:5000/api/inspectors",
+            "https://104.198.253.120:5000/api/inspectors",
             inspector
           );
         })

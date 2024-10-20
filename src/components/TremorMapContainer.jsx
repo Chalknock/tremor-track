@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
 
 const TremorMapContainer = ({ formData, updateCoordinates }) => {
   const ClickHandler = ({ setMarkerPosition, updateCoordinates }) => {
@@ -82,8 +83,13 @@ const TremorMapContainer = ({ formData, updateCoordinates }) => {
         {markerPosition && (
           <Marker position={markerPosition}>
             <Popup>
-              Latitude: {markerPosition[0]} <br />
-              Longitude: {markerPosition[1]}
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <PersonPinIcon style={{ marginRight: "8px" }} />
+                <div>
+                  Latitude: {markerPosition[0]} <br />
+                  Longitude: {markerPosition[1]}
+                </div>
+              </div>
             </Popup>
           </Marker>
         )}

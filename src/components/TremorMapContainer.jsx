@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Set default icon options for markers
+delete L.Icon.Default.prototype._getIconUrl; // Remove default icon URL method
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 const TremorMapContainer = ({ formData, updateCoordinates }) => {
   const ClickHandler = ({ setMarkerPosition, updateCoordinates }) => {
@@ -18,11 +28,12 @@ const TremorMapContainer = ({ formData, updateCoordinates }) => {
       };
     }, [map, setMarkerPosition, updateCoordinates]);
 
-    useEffect(() => {
-      map.setView(mapCenter);
-    }, [map, mapCenter]);
     return null;
   };
+
+  const [location, setLocation] = useState({ lat: null, lon: null });
+  const [markerPosition, setMarkerPosition] = useState([14.599512, 120.984222]);
+  const [mapCenter, setMapCenter] = useState([14.599512, 120.984222]);
 
   useEffect(() => {
     const handleSuccess = (position) => {
@@ -43,52 +54,43 @@ const TremorMapContainer = ({ formData, updateCoordinates }) => {
     }
   }, []);
 
-  let initialPosition = [formData.lat, formData.lon];
-
-  const [location, setLocation] = useState({ lat: null, lon: null });
-  const [markerPosition, setMarkerPosition] = useState([14.599512, 120.984222]);
-  const [mapCenter, setMapCenter] = useState([14.599512, 120.984222]);
   useEffect(() => {
-    if (isNaN(formData.lat) || isNaN(formData.lon)) {
-      if (location.lat && location.lon) {
-        setMapCenter([location.lat, location.lon]);
-      }
-    } else {
+    if (!isNaN(formData.lat) && !isNaN(formData.lon)) {
       setMapCenter([formData.lat, formData.lon]);
       setMarkerPosition([formData.lat, formData.lon]);
+    } else if (location.lat && location.lon) {
+      setMapCenter([location.lat, location.lon]);
     }
-  }, [formData, location, updateCoordinates]);
-  return (
-    <>
-      <MapContainer
-        center={
-          isNaN(initialPosition[1], isNaN(initialPosition[0]))
-            ? mapCenter
-            : initialPosition
-        }
-        zoom={13}
-        scrollWheelZoom={false}
-        style={{ height: "45vh", width: "100%" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <ClickHandler
-          setMarkerPosition={setMarkerPosition}
-          updateCoordinates={updateCoordinates}
-        />
+  }, [formData, location]);
 
-        {markerPosition && (
-          <Marker position={markerPosition}>
-            <Popup>
-              Latitude: {markerPosition[0]} <br />
-              Longitude: {markerPosition[1]}
-            </Popup>
-          </Marker>
-        )}
-      </MapContainer>
-    </>
+  return (
+    <MapContainer
+      center={
+        isNaN(markerPosition[0]) || isNaN(markerPosition[1])
+          ? mapCenter
+          : markerPosition
+      }
+      zoom={13}
+      scrollWheelZoom={false}
+      style={{ height: "45vh", width: "100%" }}
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <ClickHandler
+        setMarkerPosition={setMarkerPosition}
+        updateCoordinates={updateCoordinates}
+      />
+      {markerPosition && (
+        <Marker position={markerPosition}>
+          <Popup>
+            Latitude: {markerPosition[0]} <br />
+            Longitude: {markerPosition[1]}
+          </Popup>
+        </Marker>
+      )}
+    </MapContainer>
   );
 };
 

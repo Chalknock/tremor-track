@@ -21,6 +21,10 @@ const TremorMapContainer = ({ formData, updateCoordinates }) => {
       };
     }, [map, setMarkerPosition, updateCoordinates]);
 
+    useEffect(() => {
+      map.setView(mapCenter);
+    }, [map, mapCenter]);
+    return null;
     return null;
   };
 

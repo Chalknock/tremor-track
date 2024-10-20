@@ -14,7 +14,7 @@ export const TremorInspectorList = ({ formData, handleInspectorClick }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://chalknock.online/api/inspectorAll"
+          "https://tremor.chalknock.online/api/inspectorAll"
         );
         setData(response.data);
       } catch (error) {

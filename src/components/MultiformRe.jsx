@@ -421,7 +421,7 @@ const MultiformRe = () => {
   const handleRestore = async (inspectionId) => {
     try {
       const response = await axios.get(
-        `https://chalknock.online/api/inspections/${inspectionId}`
+        `https://tremor.chalknock.online/api/inspections/${inspectionId}`
       );
 
       const [restoredData] = response.data;
@@ -761,7 +761,7 @@ const MultiformRe = () => {
   const handleSubmit = async (e) => {
     try {
       const response = await axios.post(
-        "https://chalknock.online/api/inspections",
+        "https://tremor.chalknock.online/api/inspections",
         formData
       );
     } catch (error) {
@@ -772,7 +772,7 @@ const MultiformRe = () => {
   const handleInsertData = async (e) => {
     try {
       const response = await axios.post(
-        "https://chalknock.online/api/inspections",
+        "https://tremor.chalknock.online/api/inspections",
         formData
       );
 

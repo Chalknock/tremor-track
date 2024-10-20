@@ -116,7 +116,7 @@ export const TremorInspectionList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://104.198.253.120:5000/api/inspectionsAll"
+          "https://chalknock.online/api/inspectionsAll"
         );
         setData(response.data);
       } catch (error) {
@@ -136,7 +136,7 @@ export const TremorInspectionList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://104.198.253.120:5000/api/delete/${id}`);
+      await axios.delete(`https://chalknock.online/api/delete/${id}`);
       setData(data.filter((inspection) => inspection.id !== id));
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -150,7 +150,7 @@ export const TremorInspectionList = () => {
   const handleRestore = async (inspectionId) => {
     try {
       const response = await axios.get(
-        `https://104.198.253.120:5000/api/inspections/${inspectionId}`
+        `https://chalknock.online/api/inspections/${inspectionId}`
       );
 
       const [restoredData] = response.data;

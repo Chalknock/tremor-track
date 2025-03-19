@@ -48,7 +48,7 @@ const InspectorForm = () => {
 
       await Promise.all(
         inspectors.map(async (inspector) => {
-          await axios.post("https://localhost/api/inspectors", inspector);
+          await axios.post("http://localhost/api/inspectors", inspector);
         })
       );
 

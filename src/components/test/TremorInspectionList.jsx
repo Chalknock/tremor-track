@@ -115,9 +115,7 @@ export const TremorInspectionList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://localhost/api/inspectionsAll"
-        );
+        const response = await axios.get("http://localhost/api/inspectionsAll");
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -136,7 +134,7 @@ export const TremorInspectionList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://localhost/api/delete/${id}`);
+      await axios.delete(`http://localhost/api/delete/${id}`);
       setData(data.filter((inspection) => inspection.id !== id));
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -150,7 +148,7 @@ export const TremorInspectionList = () => {
   const handleRestore = async (inspectionId) => {
     try {
       const response = await axios.get(
-        `https://localhost/api/inspections/${inspectionId}`
+        `http://localhost/api/inspections/${inspectionId}`
       );
 
       const [restoredData] = response.data;

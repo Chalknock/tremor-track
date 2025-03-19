@@ -48,10 +48,7 @@ const InspectorForm = () => {
 
       await Promise.all(
         inspectors.map(async (inspector) => {
-          await axios.post(
-            "https://tremor.chalknock.online/api/inspectors",
-            inspector
-          );
+          await axios.post("https://localhost/api/inspectors", inspector);
         })
       );
 

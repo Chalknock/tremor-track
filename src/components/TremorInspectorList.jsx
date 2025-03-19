@@ -13,9 +13,7 @@ export const TremorInspectorList = ({ formData, handleInspectorClick }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://tremor.chalknock.online/api/inspectorAll"
-        );
+        const response = await axios.get("https://localhost/api/inspectorAll");
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

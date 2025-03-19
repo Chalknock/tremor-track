@@ -273,7 +273,7 @@ const Multiform = () => {
   const handleSubmit = async (e) => {
     try {
       const response = await axios.post(
-        "https://tremor.chalknock.online/api/inspections",
+        "https://localhost/api/inspections",
         formData
       );
       console.log("Response from backend:dasdas", response.data);
@@ -285,7 +285,7 @@ const Multiform = () => {
   const handleInsertData = async (e) => {
     try {
       const response = await axios.post(
-        "https://tremor.chalknock.online/api/inspections",
+        "https://localhost/api/inspections",
         formData
       );
       console.log("Response from backend:", response.data);

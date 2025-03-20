@@ -421,7 +421,7 @@ const MultiformRe = () => {
   const handleRestore = async (inspectionId) => {
     try {
       const response = await axios.get(
-        `http://localhost/api/inspections/${inspectionId}`
+        `http://100.74.84.88:5000/api/inspections/${inspectionId}`
       );
 
       const [restoredData] = response.data;
@@ -761,7 +761,7 @@ const MultiformRe = () => {
   const handleSubmit = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost/api/inspections",
+        "http://100.74.84.88:5000/api/inspections",
         formData
       );
     } catch (error) {
@@ -772,7 +772,7 @@ const MultiformRe = () => {
   const handleInsertData = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost/api/inspections",
+        "http://100.74.84.88:5000/api/inspections",
         formData
       );
 

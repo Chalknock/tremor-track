@@ -6,6 +6,7 @@ import "../../assets/css/testInspection.css"; // Import the CSS file for styling
 import { tremorExportPdf } from "../../utilities/tremorExportPdf";
 import { tremorExportDetailedPdf } from "../../utilities/tremorExportDetailedPdf";
 import dayjs from "dayjs";
+import axiosInstance from "../../api";
 
 export const TremorInspectionList = () => {
   const [data, setData] = useState([]);
@@ -115,9 +116,11 @@ export const TremorInspectionList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://tremor.chalknock.online/api/inspectionsAll"
-        );
+        // const response = await axios.get(
+        //   "https://tremor.chalknock.online/api/inspectionsAll"
+        // );
+        const response = await axiosInstance.get("/inspectionsAll");
+
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -136,7 +139,8 @@ export const TremorInspectionList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://tremor.chalknock.online/api/delete/${id}`);
+      // await axios.delete(`https://tremor.chalknock.online/api/delete/${id}`);
+      const response = await axiosInstance.delete(`/delete/${id}`);
       setData(data.filter((inspection) => inspection.id !== id));
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -149,9 +153,11 @@ export const TremorInspectionList = () => {
 
   const handleRestore = async (inspectionId) => {
     try {
-      const response = await axios.get(
-        `https://tremor.chalknock.online/api/inspections/${inspectionId}`
-      );
+      // const response = await axios.get(
+      //   `https://tremor.chalknock.online/api/inspections/${inspectionId}`
+      // );
+      const response = await axiosInstance.get(`/delete/${id}`);
+
 
       const [restoredData] = response.data;
       if (restoredData) {

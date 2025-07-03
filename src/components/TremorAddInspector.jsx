@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../assets/css/inspectorForm.css"; // Import the CSS file
+import axiosInstance from '../api.jsx'
 
 const InspectorForm = () => {
   const [inspectors, setInspectors] = useState([
@@ -48,10 +49,11 @@ const InspectorForm = () => {
 
       await Promise.all(
         inspectors.map(async (inspector) => {
-          await axios.post(
-            "https://tremor.chalknock.online/api/inspectors",
-            inspector
-          );
+          // await axios.post(
+          //   "https://tremor.chalknock.online/api/inspectors",
+          //   inspector
+          // );
+          const response = await axiosInstance.post('/inspectors', inspector);
         })
       );
 

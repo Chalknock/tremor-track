@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useInspection } from "../components/provider/InspectionProvider";
 import "../assets/css/inspectorList.css";
 import { Typography } from "@mui/material";
+import axiosInstance from "../api";
+
 
 export const TremorInspectorList = ({ formData, handleInspectorClick }) => {
   const [data, setData] = useState([]);
@@ -13,9 +15,11 @@ export const TremorInspectorList = ({ formData, handleInspectorClick }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://tremor.chalknock.online/api/inspectorAll"
-        );
+        // const response = await axios.get(
+        //   "https://tremor.chalknock.online/api/inspectorAll"
+        // );
+        const response = await axiosInstance.get("/inspectorAll");
+
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -50,6 +50,7 @@ import { AdditionalFurtherAction } from "../formSteps/AdditionalPostingEvalutaio
 import { useParams } from "react-router-dom";
 import { useInspection } from "./provider/InspectionProvider";
 import TremorInspectorList from "./TremorInspectorList";
+import axiosInstance from "../api";
 
 const Multiform = () => {
   // const abs = useParams();
@@ -272,10 +273,11 @@ const Multiform = () => {
 
   const handleSubmit = async (e) => {
     try {
-      const response = await axios.post(
-        "https://tremor.chalknock.online/api/inspections",
-        formData
-      );
+      // const response = await axios.post(
+      //   "https://tremor.chalknock.online/api/inspections",
+      //   formData
+      // );
+      const response = await axiosInstance.post("/inspections", formData);
       console.log("Response from backend:dasdas", response.data);
     } catch (error) {
       console.error("Error sending data:", error);
@@ -284,10 +286,13 @@ const Multiform = () => {
 
   const handleInsertData = async (e) => {
     try {
-      const response = await axios.post(
-        "https://tremor.chalknock.online/api/inspections",
-        formData
-      );
+      // const response = await axios.post(
+      //   "https://tremor.chalknock.online/api/inspections",
+      //   formData
+      // );
+
+      const response = await axiosInstance.post("/inspections", formData);
+
       console.log("Response from backend:", response.data);
       if (response.data.message === "Data inserted successfully") {
         alert("Data inserted successfully");

@@ -18,6 +18,8 @@ import "../assets/css/multiStepForm.css";
 import jsPDF from "jspdf";
 import TremorInspectedModal from "./modal/posting/TremorInspectedModal";
 
+import axiosInstance from "../api";
+
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -420,10 +422,11 @@ const MultiformRe = () => {
   }, [inspectionId]);
   const handleRestore = async (inspectionId) => {
     try {
-      const response = await axios.get(
-        `https://tremor.chalknock.online/api/inspections/${inspectionId}`
-      );
+      // const response = await axios.get(
+      //   `https://tremor.chalknock.online/api/inspections/${inspectionId}`
+      // );
 
+      const response = await axiosInstance.get(`/inspections/${inspectionId}`);
       const [restoredData] = response.data;
       console.log(formData.inspector);
       if (restoredData) {
@@ -760,10 +763,11 @@ const MultiformRe = () => {
 
   const handleSubmit = async (e) => {
     try {
-      const response = await axios.post(
-        "https://tremor.chalknock.online/api/inspections",
-        formData
-      );
+      // const response = await axios.post(
+      //   "https://tremor.chalknock.online/api/inspections",
+      //   formData
+      // );
+      const response = await axiosInstance.post("/inspections", formData);
     } catch (error) {
       console.error("Error sending data: submit", error);
     }
@@ -771,10 +775,11 @@ const MultiformRe = () => {
 
   const handleInsertData = async (e) => {
     try {
-      const response = await axios.post(
-        "https://tremor.chalknock.online/api/inspections",
-        formData
-      );
+      // const response = await axios.post(
+      //   "https://tremor.chalknock.online/api/inspections",
+      //   formData
+      // );
+      const response = await axiosInstance.post("/inspections", formData);
 
       if (response.data.message === "Data inserted successfully") {
         alert("Data inserted successfully");
